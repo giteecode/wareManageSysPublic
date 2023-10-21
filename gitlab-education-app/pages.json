@@ -1,0 +1,214 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/tabBar/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"app-plus": {
+					"bounce": "vertical",
+					"titleNView": false
+				}
+			}
+		},
+		
+		{
+			"path": "pages/tabBar/center/login",
+			"style": {
+				"navigationBarTitleText": "用户登录",
+				"app-plus": {
+					"bounce": "vertical",
+					"titleNView": false
+				}
+			}
+		},
+		
+		{
+			"path": "pages/tabBar/course/index",
+			"style": {
+			    "enablePullDownRefresh": true,
+				"navigationBarTitleText": "视频课堂",
+				"app-plus": {
+					"bounce": "vertical",
+					"titleNView": false
+				}
+			}
+		},
+		
+		{
+			"path": "pages/tabBar/paper/index",
+			"style": {
+				/* "enablePullDownRefresh": true, */
+				"navigationBarTitleText": "考试中心",
+				 "app-plus": {
+					"bounce": "vertical",
+					"titleNView": false
+				} 
+			}
+		},
+		
+		{
+			"path": "pages/tabBar/center/index",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"app-plus": {
+					"bounce": "vertical",
+					"titleNView": {
+						"buttons": [{
+							"fontSize": "22px",
+							"color": "#FFFFFF"
+						}]
+					}
+				}
+			}
+		},
+		
+		{
+			"path": "pages/tabBar/center/skin-change",
+			"style": {
+				"navigationBarTitleText": "主题切换"
+			}
+		},
+		{
+			"path": "pages/tabBar/center/message",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "消息中心"
+			}
+		},
+		
+		{
+			"path": "pages/tabBar/paper/exam-question"
+		},
+		
+		{
+			"path": "pages/tabBar/center/userInfo",
+			"style": {
+				"navigationBarTitleText": "个人资料"
+			}
+		},
+		
+		{
+			"path": "pages/tabBar/center/about",
+			"style": {
+				"navigationBarTitleText": "关于我们"
+			}
+		},
+		
+		{
+			"path": "pages/tabBar/center/setting",
+			"style": {
+				"navigationBarTitleText": "系统设置"
+			}
+		},
+		
+		{
+			"path": "pages/tabBar/center/service",
+			"style": {
+				"navigationBarTitleText": "服务条款"
+			}
+		},
+		{
+			"path": "pages/tabBar/center/exam-history",
+			"style": {
+				"navigationBarTitleText": "考试记录"
+			}
+		},
+		
+		{
+			"path": "pages/tabBar/center/wrongBook",
+			"style": {
+				"navigationBarTitleText": "错题本"
+			}
+		},
+		
+		{
+			"path": "pages/tabBar/center/wrongBookQuestion",
+			"style": {
+				"navigationBarTitleText": "错题本详情"
+			}
+		},
+		/* 
+		{
+			"path": "pages/tabBar/center/user",
+			"style": {
+				"navigationBarTitleText": "个人资料"
+			}
+		}, */
+		{
+			"path": "pages/tabBar/center/password",
+			"style": {
+				"navigationBarTitleText": "登录密码"
+			}
+		},
+		{
+			"path": "pages/tabBar/course/course-detail",
+			"style": {
+				"navigationBarTitleText": "课程详情"
+			}
+		},
+		
+		{
+			"path": "pages/tabBar/paper/examDetail",
+			"style": {
+				"navigationBarTitleText": "考试详情"
+			}
+		},
+		{
+			"path": "pages/tabBar/paper/result",
+			"style": {
+				"navigationBarTitleText": "考试结果"
+			}
+		},
+        {
+            "path" : "pages/tabBar/course/coursePlay",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+			"path": "pages/test/test1/index",
+			"style": {
+				"navigationBarTitleText": "测试1"
+			}
+		}
+    ],
+	"globalStyle": {
+		"pageOrientation": "portrait",
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "Hello uniapp",
+		"navigationBarBackgroundColor": "#007AFF"
+	},
+	
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#007AFF",
+		"borderStyle": "black",
+		"backgroundColor": "#F8F8F8",
+		"list": [{
+				"pagePath": "pages/tabBar/index/index",
+				"iconPath": "static/menu/home.png",
+				"selectedIconPath": "static/menu/home_select.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/tabBar/course/index",
+				"iconPath": "static/menu/course.png",
+				"selectedIconPath": "static/menu/course_select.png",
+				"text": "视频课堂"
+			}, {
+				"pagePath": "pages/tabBar/paper/index",
+				"iconPath": "static/menu/exam.png",
+				"selectedIconPath": "static/menu/exam_select.png",
+				"text": "考试中心"
+			}, {
+				"pagePath": "pages/tabBar/center/index",
+				"iconPath": "static/menu/user.png",
+				"selectedIconPath": "static/menu/user_select.png",
+				"text": "个人中心"
+			}
+		]
+	}
+}

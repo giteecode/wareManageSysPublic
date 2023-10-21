@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.system.SystemRoleMenuMapper">
+
+    <resultMap id="roleMenuDto" type="com.education.model.dto.RoleMenuDto">
+        <id column="id" property="id"></id>
+        <collection
+                property="menuList" autoMapping="true" ofType="com.education.model.entity.SystemMenu">
+        </collection>
+    </resultMap>
+
+    <select id="selectTreeMenuByRoleId" resultMap="roleMenuDto">
+        select role.id role_id, menu.* from system_role role left system_role_menu role_menu
+        on role.id = role_menu.role_id
+        left join system_menu menu on role_menu.menu_id = menu.id
+        where role.id = #{roleId} order by menu.sort asc
+    </select>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.education.CourseStudyProgressMapper">
+
+
+    <update id="updateStudyProgress" parameterType="com.education.model.entity.CourseStudyProgress">
+        update course_study_progress set watch_time = watch_time + #{watchTime}, update_date = #{updateDate}
+        where course_id = #{courseId}
+        and student_id = #{studentId}
+    </update>
+
+    <select id="listPage">
+        SELECT
+            ci.id,
+            ci.`name`,
+            ctp.watch_time,
+            a.duration_sum
+        FROM
+            course_study_progress ctp
+                INNER JOIN course_info ci ON ctp.course_id = ci.id
+                INNER JOIN ( SELECT course_id, sum( duration ) duration_sum FROM course_section_node GROUP BY course_id ) a ON ctp.course_id = a.course_id
+    </select>
+
+
+
+
+</mapper>

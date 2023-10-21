@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>#(title)</title>
+    <link rel="stylesheet" href="#(serverUrl)/static/layui/css/layui.css"/>
+    <script src="#(serverUrl)/static/layui/layui.js" type="application/javascript"></script>
+    <style >
+        body {
+            background: #D0D0D0;
+        }
+        .layui-container {
+            width: 60%;
+            min-height: 600px;
+            background-color: #FFFFFF;
+            margin-top: 1%;
+            border: 1px solid #D0D0D0;
+            position: relative;
+        }
+
+        .layui-container p {
+            display: inline-block;
+        }
+        .grid-demo {
+            padding: 10px;
+            line-height: 38px;
+        }
+        .title {
+            color: #1ea0fa;
+            font-weight: bold;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .question_type {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .layui-col-md4 {
+            width: 100%;
+        }
+        .question_item {
+            font-size: 16px;
+            margin: 10px 20px 10px 20px;
+        }
+        .question_content {
+            position: relative;
+            left: 10%;
+        }
+        .layui-col-md4 .item {
+            display: inline-block;
+            width: 40%;
+            margin: 20px;
+            float: left;
+            line-height: 28px;
+        }
+        .option ul li {
+            display: inline-block;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="layui-container">
+        <div class="layui-col-md4">
+            <div class="grid-demo title grid-demo-bg1">
+                <span>#(title)</span>
+            </div>
+        </div>
+
+        #for (item : testPaperQuestionList)
+            <div class="question_content">
+                <div class="grid-demo grid-demo-bg1">
+                    <span class="question_type">
+                        #(item.groupQuestionTypeTitleNumber)、#(item.groupQuestionTypeTitle)
+                    </span>
+                </div>
+
+                #for (question : item.groupQuestionList)
+                    <div class="question_item">
+                        <div>
+                            #(for.count).#(question.content)
+                        </div>
+
+                        <!-- 选择题 -->
+                        #if(question.optionsList)
+                            <div class="option">
+                                <ul>
+                                    #for(option : question.optionsList)
+                                    <li>
+                                        <span>#(option.label)</span>
+                                        #(option.option_name)
+                                    </li>
+                                    #end
+                                </ul>
+                            </div>
+                        #end
+                    </div>
+                #end
+            </div>
+        #end
+    </div>
+</body>
+
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+    })
+</script>
+</html>

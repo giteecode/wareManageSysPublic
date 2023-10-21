@@ -1,0 +1,1 @@
+ALTER TABLE exam_question_answer ADD COLUMN test_paper_name varchar(100) NOT NULL COMMENT '试卷名称';

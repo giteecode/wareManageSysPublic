@@ -1,0 +1,1 @@
+alter table message_info modify message_type int(4) DEFAULT NULL COMMENT '消息类型（1 试卷批改通知)';

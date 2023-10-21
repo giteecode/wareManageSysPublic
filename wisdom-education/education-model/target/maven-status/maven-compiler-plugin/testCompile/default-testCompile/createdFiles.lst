@@ -1,0 +1,14 @@
+com\test\annotation\ModelBeanConfig.class
+com\test\annotation\SystemRole.class
+com\test\annotation\SystemMenu.class
+com\test\annotation\RequestModelBeanMethodArgumentResolver.class
+com\test\annotation\RequestModelBeanBodyMethodArgumentResolver.class
+com\test\annotation\RequestModelBeanBody.class
+com\test\annotation\ResultInterceptor.class
+com\test\annotation\EntityResultSetHandler.class
+com\test\annotation\RequestModelBeanParam.class
+com\test\annotation\ModelBeanResultSetHandler.class
+com\test\annotation\ModelGenerate.class
+com\test\annotation\ModelBean.class
+com\test\annotation\MapToEntityResultInterceptor.class
+com\test\annotation\SystemAdmin.class

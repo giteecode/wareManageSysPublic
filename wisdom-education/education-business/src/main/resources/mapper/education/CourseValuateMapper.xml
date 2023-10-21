@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.education.CourseValuateMapper">
+
+    <select id="listPage" resultType="com.education.model.dto.CourseValuateDto">
+        SELECT
+            course.*,
+            student.login_name,
+            student.head_img
+        FROM
+            course_valuate course
+            LEFT JOIN student_info student ON course.student_id = student.id
+        <where>
+            <if test="courseValuate.courseId != null">
+                AND course.course_id = #{courseValuate.courseId}
+            </if>
+        </where>
+        ORDER BY course.id DESC
+    </select>
+
+
+    <select id="sumValuateMarkByCourseId" resultType="java.lang.Integer">
+        SELECT SUM(valuate_mark) FROM course_valuate WHERE course_id = #{courseId}
+    </select>
+</mapper>

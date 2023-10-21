@@ -1,0 +1,1 @@
+alter table system_admin add email varchar(20) DEFAULT NULL COMMENT '邮箱';

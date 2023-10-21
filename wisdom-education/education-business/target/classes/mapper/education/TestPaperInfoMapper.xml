@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.education.TestPaperInfoMapper">
+
+    <select id="selectPageList" resultType="com.education.model.dto.TestPaperInfoDto">
+        select paper.*, subject.name subject_name, grade.name gradeInfoName from test_paper_info paper
+        left join grade_info grade on paper.grade_info_id = grade.id
+        left join subject_info subject on paper.subject_id = subject.id
+        <where>
+
+            <if test="testPaperInfo.gradeInfoId != null">
+                and paper.grade_info_id = #{testPaperInfo.gradeInfoId}
+            </if>
+
+            <if test="testPaperInfo.name != null and testPaperInfo.name != ''">
+                <bind name="name" value="'%' + testPaperInfo.name+ '%'"/>
+                and paper.name like #{name}
+            </if>
+
+            <if test="testPaperInfo.subjectId != null">
+                and paper.subject_id = #{testPaperInfo.subjectId}
+            </if>
+
+            <if test="testPaperInfo.publishFlag != null and testPaperInfo.publishFlag">
+                and paper.publish_flag = 1
+            </if>
+        </where>
+        order by paper.id desc
+    </select>
+
+
+    <!-- 试卷试题列表 -->
+    <select id="selectPaperQuestionList" resultType="com.education.model.dto.TestPaperQuestionDto">
+        select
+          b.id, a.id question_info_id, a.content, b.sort, b.mark, a.answer,
+          b.test_paper_info_id, a.question_type, a.options
+          from question_info a inner join test_paper_question_info b
+        on a.id = b.question_info_id inner join test_paper_info c
+        on b.test_paper_info_id = c.id where c.id = #{testPaperQuestionRequest.testPaperInfoId}
+        <if test="testPaperQuestionRequest.questionType != null">
+            and a.question_type = #{testPaperQuestionRequest.questionType}
+        </if>
+
+        <if test="testPaperQuestionRequest.content != null and testPaperQuestionRequest.content != ''">
+            <bind name="content" value="'%' + testPaperQuestionRequest.content + '%'"/>
+            and a.content like #{content}
+        </if>
+        order by b.sort asc
+    </select>
+
+    <select id="getQuestionAnalysis" resultType="com.education.model.dto.QuestionInfoDto">
+        SELECT
+            a.question_info_id id,
+            a.content,
+            IFNULL( b.num, 0 ) right_answer_num,
+            IFNULL( c.num, 0 ) error_answer_num,
+            IFNULL( d.num, 0 ) total_answer_num
+        FROM
+            ( SELECT question_info_id, content FROM test_paper_question_info a
+                INNER JOIN question_info b ON a.question_info_id = b.id WHERE test_paper_info_id = #{id} ) a
+                LEFT JOIN (
+                SELECT question_info_id, count( question_info_id ) num
+                FROM exam_question_answer WHERE test_paper_id = #{id} AND correct_status = 1 GROUP BY question_info_id )
+                    b ON a.question_info_id = b.question_info_id
+                LEFT JOIN (
+                    SELECT
+                      question_info_id, count( question_info_id ) num FROM exam_question_answer
+                    WHERE test_paper_id = #{id}
+                    AND correct_status = 0 GROUP BY question_info_id )
+         c ON a.question_info_id = c.question_info_id
+
+         LEFT JOIN ( SELECT question_info_id, count( question_info_id ) num FROM exam_question_answer
+        WHERE test_paper_id = #{id}
+        GROUP BY question_info_id ) d
+       ON a.question_info_id = d.question_info_id
+    </select>
+
+</mapper>

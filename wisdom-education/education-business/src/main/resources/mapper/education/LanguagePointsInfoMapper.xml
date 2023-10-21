@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.education.LanguagePointsInfoMapper">
+
+    <!--<select id="selectList" resultType="languagePointsInfoDto">
+        select language_points.*, grade.name grade_info_name, subject.name subject_name from language_points_info language_points
+         left join subject_info subject on language_points.subject_id = subject.id
+         left join grade_info grade on grade.id = language_points.grade_info_id
+         <where>
+             <if test="languagePointsInfo.subjectId != null">
+                 and language_points.subject_id = #{languagePointsInfo.subjectId}
+             </if>
+
+             <if test="languagePointsInfo.parentId != null">
+                and language_points.parent_id = #{languagePointsInfo.parentId}
+             </if>
+         </where>
+    </select>-->
+
+</mapper>

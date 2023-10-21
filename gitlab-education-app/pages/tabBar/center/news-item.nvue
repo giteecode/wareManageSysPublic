@@ -1,0 +1,210 @@
+<template>
+	<view class="media-item view" hover-class="media-item-hover"  @click="lookExamDetail">
+		<!-- <view class="view" :style="options.article_type === 2 ? 'flex-direction: row';" :class="{'media-image-right': options.article_type === 2, 'media-image-left': options.article_type === 1}"> -->
+		<!-- TODO 在支付宝小程序下 需要用 style 覆盖标签的默认样式 -->
+		 <view class="view" :style="{flexDirection:  'row'}">
+			<text class="media-title">{{options.testPaperInfoName}}</text>
+		</view>
+		
+		<view class="media-foot flex-row" style="flex-direction: row;">
+			<view class="media-info flex-row" style="flex-direction: row;">
+				<text class="info-text">耗时{{options.examTime}}</text>
+				<text class="info-text time">{{options.createDate}}</text>
+			</view>
+			<!-- <view class="max-close-view" @click.stop="close">
+				 <button size="mini" type="warn">查看解析</button>
+			</view> -->
+		</view>
+		<view class="media-item-line" style="position: absolute;"></view> 
+	</view>
+</template>
+
+<script>
+	import uniList from '@/components/uni-list/uni-list.vue'
+	import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
+	export default {
+		components: {uniList, uniListItem},
+		props: {
+			options: {
+				type: Object,
+				default: function(e) {
+					return {}
+				}
+			},
+			
+			examInfoId: {
+				type: Number
+			}
+		},
+		methods: {
+			click() {
+				this.$emit('click');
+			},
+			
+			lookExamDetail(e) {
+				uni.navigateTo({
+				    url: '../paper/examDetail?examInfoId=' + this.options.id
+				})
+			}
+		}
+	}
+</script>
+
+<style>
+	.view {
+		flex-direction: column;
+	}
+
+	.flex-row {
+		flex-direction: row;
+	}
+
+	.flex-col {
+		flex-direction: column;
+	}
+
+	.list-cell {
+		width: 750rpx;
+		padding: 0 30rpx;
+	}
+
+	.uni-list-cell-hover {
+		background-color: #eeeeee;
+	}
+
+	.media-item {
+		position: relative;
+		flex: 1;
+		flex-direction: column;
+		/* border-bottom-width: 1rpx;
+		border-bottom-style: solid;
+		border-bottom-color: #ebebeb; */
+		padding: 20rpx 30rpx 21rpx 30rpx;
+	}
+
+    .media-item-hover{
+        background-color: #eee;
+    }
+
+	.media-item-line {
+		position: absolute;
+		left: 30rpx;
+		right: 30rpx;
+		bottom: 0;
+		height: 1rpx;
+		background-color: #ebebeb;
+	}
+
+	.media-image-right {
+		flex-direction: row;
+	}
+
+	.media-image-left {
+		flex-direction: row-reverse;
+	}
+
+	.media-title {
+		flex: 1;
+	}
+
+	.media-title {
+		lines: 3;
+		text-overflow: ellipsis;
+		font-size: 30rpx;
+		color: #555555;
+	}
+
+	.media-title2 {
+		flex: 1;
+		margin-top: 6rpx;
+		line-height: 40rpx;
+	}
+
+	.image-section {
+		margin-top: 20rpx;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.image-section-right {
+		margin-top: 0rpx;
+		margin-left: 10rpx;
+		width: 225rpx;
+		height: 146rpx;
+	}
+
+	.image-section-left {
+		margin-top: 0rpx;
+		margin-right: 10rpx;
+		width: 225rpx;
+		height: 146rpx;
+	}
+
+	.image-list1 {
+		width: 690rpx;
+		height: 481rpx;
+	}
+
+	.image-list2 {
+		width: 225rpx;
+		height: 146rpx;
+	}
+
+	.image-list3 {
+		width: 225rpx;
+		height: 146rpx;
+	}
+
+	.media-info {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.info-text {
+		width: 360upx;
+		color: #999999;
+		font-size: 24rpx;
+	}
+
+	.media-foot {
+		margin-top: 25rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.max-close-view {
+		position: relative;
+		align-items: center;
+		flex-direction: row;
+		width: 180rpx;
+		height: 30rpx;
+		line-height: 30rpx;
+		/*border-width: 1rpx;
+		 border-style: solid;
+		border-color: #aaaaaa;
+		border-radius: 4px; */
+		justify-content: center;
+		text-align: center;
+	}
+
+	.close-l {
+		position: absolute;
+		width: 18rpx;
+		height: 1rpx;
+		background-color: #aaaaaa;
+	}
+
+	.close-h {
+		transform: rotate(45deg);
+	}
+
+	.close-v {
+		transform: rotate(-45deg);
+	}
+	
+	.time {
+		position: relative;
+		left: 100upx;
+	}
+</style>

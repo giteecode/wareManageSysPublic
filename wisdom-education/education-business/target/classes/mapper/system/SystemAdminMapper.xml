@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.system.SystemAdminMapper">
+
+    <resultMap id="adminRoleDto" autoMapping="true" type="com.education.model.dto.AdminRoleDto">
+        <id property="id" column="id"></id>
+        <collection property="systemRoleList" ofType="com.education.model.entity.SystemRole">
+            <id column="role_id" property="id"></id>
+            <result column="role_name" property="name"></result>
+        </collection>
+    </resultMap>
+
+    <select id="selectById" resultMap="adminRoleDto">
+        select admin.*, role.id role_id, role.name role_name from system_admin admin
+        left join system_admin_role admin_role on admin.id = admin_role.admin_id
+        left join  system_role role on admin_role.role_id = role.id
+        where admin.id = #{adminId}
+    </select>
+
+</mapper>

@@ -1,0 +1,1 @@
+ALTER TABLE course_info DROP COLUMN parent_id;

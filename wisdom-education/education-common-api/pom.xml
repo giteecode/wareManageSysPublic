@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>education</artifactId>
+        <groupId>com.education</groupId>
+        <version>1.0.6-RELEASE</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <description>公共api接口模块</description>
+
+    <artifactId>education-common-api</artifactId>
+    <groupId>com.education.common.api</groupId>
+    <version>1.0.6-RELEASE</version>
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <artifactId>education-common</artifactId>
+            <groupId>com.education.common</groupId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.education.business</groupId>
+            <artifactId>education-business</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.education.model</groupId>
+            <artifactId>education-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+</project>

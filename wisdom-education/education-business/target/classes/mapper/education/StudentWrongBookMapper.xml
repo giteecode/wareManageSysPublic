@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.education.StudentWrongBookMapper">
+
+    <select id="selectPageList" resultType="com.education.model.dto.QuestionInfoAnswer">
+        SELECT
+            question.id question_info_id,
+            question.content,
+            question.options,
+            question.analysis,
+            question.answer,
+            question.video_url,
+            question.question_type,
+            question.subject_id,
+            question.subject_name,
+            wrong_book.student_answer,
+            wrong_book.mark student_mark,
+            wrong_book.create_date,
+            wrong_book.question_mark,
+            wrong_book.correct_status
+        FROM
+            exam_wrong_book wrong_book
+        INNER JOIN (
+            SELECT
+              a.*,
+              b.NAME subject_name
+            FROM
+              question_info a
+            LEFT JOIN subject_info b ON a.subject_id = b.id
+            <where>
+                <if test="wrongBookQuery.subjectId != null">
+                    and a.subject_id = #{wrongBookQuery.subjectId}
+                </if>
+
+                <if test="wrongBookQuery.questionType != null">
+                    and a.question_type = #{wrongBookQuery.questionType}
+                </if>
+            </where>
+        ) question ON wrong_book.question_info_id = question.id
+        WHERE
+           wrong_book.student_id = #{wrongBookQuery.studentId}
+
+        <if test="wrongBookQuery.bizId != null">
+             and wrong_book.biz_id = #{wrongBookQuery.bizId}
+        </if>
+
+        <if test="wrongBookQuery.bizType != null">
+            and wrong_book.type = #{wrongBookQuery.bizType}
+        </if>
+        ORDER BY wrong_book.id DESC
+
+
+       <!-- select
+        question.id question_info_id,
+        question.content,
+        question.options,
+        question.analysis,
+        question.answer,
+        question.video_url,
+        question.question_type,
+        wrong_book.student_answer,
+        subject.id subject_id,
+        subject.name subject_name,
+        wrong_book.mark student_mark,
+        wrong_book.create_date,
+        wrong_book.question_mark,
+        wrong_book.correct_status
+        from question_info question, student_wrong_book wrong_book, subject_info subject
+       where question.id = wrong_book.question_info_id and question.subject_id = subject.id
+
+       and wrong_book.student_id = #{wrongBookQuery.studentId}
+
+       <if test="wrongBookQuery.subjectId != null">
+           and question.subject_id = #{wrongBookQuery.subjectId }
+       </if>
+
+        <if test="wrongBookQuery.questionType != null">
+            and question.question_type = #{wrongBookQuery.questionType }
+        </if>
+        order by wrong_book.id desc -->
+    </select>
+
+
+    <select id="getTestPaperSubjectList" resultType="com.education.model.entity.SubjectInfo">
+        SELECT
+               subject.id, subject.name
+        FROM
+            exam_wrong_book book
+                INNER JOIN test_paper_info paper ON book.biz_id = paper.id
+                INNER JOIN subject_info subject ON paper.subject_id = subject.id
+        WHERE book.biz_type = 1 AND book.student_id = #{studentId} GROUP BY subject.id
+    </select>
+
+    <select id="getTestPaperListBySubjectId" resultType="com.education.model.dto.StudentWrongBookDto">
+        SELECT
+           id biz_id,
+           name biz_name,
+           number biz_question_number
+        FROM
+            (
+                SELECT
+                    paper.name,
+                    paper.id
+                FROM
+                    exam_wrong_book book
+                        INNER JOIN test_paper_info paper ON book.biz_id = paper.id
+                        INNER JOIN subject_info subject ON paper.subject_id = subject.id
+                WHERE
+                    book.biz_type = 1
+                  AND subject.id = #{subjectId} GROUP BY paper.id
+            ) a
+                INNER JOIN ( SELECT biz_id, COUNT( 1 ) number FROM exam_wrong_book book WHERE biz_type = 1
+                 AND student_id = #{studentId} GROUP BY biz_id
+                 ) b ON a.id = b.biz_id
+    </select>
+</mapper>

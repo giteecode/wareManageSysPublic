@@ -1,0 +1,1 @@
+alter table test_paper_info add html_download_url varchar(255) DEFAULT NULL COMMENT 'html预览地址';

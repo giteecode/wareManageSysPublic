@@ -1,0 +1,1 @@
+ALTER TABLE language_points_info CHANGE hasChildren has_children tinyint(1);

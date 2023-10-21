@@ -1,0 +1,1 @@
+alter table course_section_node add size bigint(20) DEFAULT NULL COMMENT '资源大小';

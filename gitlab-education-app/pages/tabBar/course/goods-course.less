@@ -1,0 +1,261 @@
+	// 轮播图
+	.swiper-course {
+		height: 262upx;
+		margin-top: 200upx;
+		background-color: #4b89ff;
+		border-bottom: 96upx solid #fff;
+		box-sizing: border-box;
+		swiper {
+			width: 709upx;
+			height: 262upx;
+			margin: 0 auto;
+			border-radius: 20upx;
+			overflow: hidden;
+			swiper-item {
+				view {
+					width: 100%;
+					height: 100%;
+					image {
+						width: 100%;
+						height: 100%;
+					}
+				}
+			}
+		}
+	}
+
+	// 课程列表
+	.course11 {
+		margin-top: 0;
+		&-list {
+			// height: 200upx;
+			padding-top: 40upx;
+			// box-sizing: border-box;
+			display: flex;
+			flex-wrap: wrap;
+			// justify-content: space-between;
+			align-items: center;
+			&-item {
+				color: #454545;
+				width: 169upx;
+				height: 48upx;
+				border-radius: 48upx;
+				background-color: #fff;
+				margin-right: 12upx;
+				font-size: 24upx;
+				margin-bottom: 40upx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			&-item:nth-child(4n) {
+				margin-right: 0;
+			}
+		}
+		&-ad {
+			height: 147upx;
+			image {
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
+
+	// 热门推荐
+	// .hot {
+	// 	width: 710upx;
+	// 	// height: 666upx;
+	// 	margin: 20upx 20upx 0 20upx;
+	// 	padding: 40upx 25upx 0 25upx;
+	// 	background-color: #fff;
+	// 	border-radius: 20upx;
+	// 	box-sizing: border-box;
+	// 	&-top {
+	// 		display: flex;
+	// 		justify-content: space-between;
+	// 		image {
+	// 			width: 134upx;
+	// 			height: 30upx;
+	// 		}
+	// 		view {
+	// 			display: flex;
+	// 			text {
+	// 				font-size: 24upx;
+	// 				color: #787878;
+	// 			}
+	// 			image {
+	// 				width: 28upx;
+	// 				height: 26upx;
+	// 				margin: 4upx 0 0 10upx;
+	// 			}
+	// 		}
+	// 	}
+	// 	&-bottom {
+	// 		margin-top: 30upx;
+	// 		display: flex;
+	// 		flex-wrap: wrap;
+	// 		justify-content: space-between;
+	// 		&-list {
+	// 			width: 210upx;
+	// 			height: 272upx;
+	// 			display: flex;
+	// 			flex-direction: column;
+	// 			image {
+	// 				width: 100%;
+	// 				height: 196upx;
+	// 				border-radius: 20upx;
+	// 			}
+	// 			text {
+	// 				font-size: 26upx;
+	// 				margin-top: 20upx;
+	// 				color: #373737;
+	// 			}
+	// 		}
+	// 	}
+	// }
+	
+	
+	// 课程推荐
+	.kecheng {
+		// height: 800upx;
+		padding: 0 20upx;
+		// margin-top: 50upx;
+		&-top {
+			display: flex;
+			justify-content: space-between;
+			image {
+				width: 134upx;
+				height: 30upx;
+			}
+			view {
+				display: flex;
+				text {
+					font-size: 24upx;
+					color: #787878;
+				}
+				image {
+					width: 28upx;
+					height: 26upx;
+					margin: 4upx 0 0 10upx;
+				}
+			}
+		}
+		&-bottom {
+			margin-top: 50upx;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			&-list {
+				width: 346upx;
+				height: 314upx;
+				background-color: #fff;
+				border-radius: 20upx;
+				margin-bottom: 44upx;
+				overflow: hidden;
+				display: flex;
+				flex-direction: column;
+				image {
+					width: 346upx;
+					height: 186upx;
+				}
+				text {
+					font-size: 28upx;
+					font-weight: 700;
+					color: #191919;
+					margin: 20upx 0;
+					margin-left: 10upx;
+				}
+				view {
+					margin-left: 10upx;
+					display: flex;
+					text {
+						margin: 0;
+						color: #8b8b8b;
+						font-size: 24upx;
+						font-weight: 400;
+					}
+					text:nth-child(2) {
+						margin: 0 20upx;
+					}
+				}
+			}
+		}
+	}
+
+
+	// 独家精选
+	.exclusive {
+		// height: 1340upx;
+		padding: 0 20upx;
+		&-top {
+			display: flex;
+			justify-content: space-between;
+			image {
+				width: 134upx;
+				height: 30upx;
+			}
+			view {
+				display: flex;
+				text {
+					font-size: 24upx;
+					color: #787878;
+				}
+				image {
+					width: 28upx;
+					height: 26upx;
+					margin: 4upx 0 0 10upx;
+				}
+			}
+		}
+		&-bottom {
+			margin-top: 30upx;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			&-list {
+				width: 710upx;
+				height: 230upx;
+				background-color: #fff;
+				border-radius: 20upx;
+				margin-bottom: 24upx;
+				display: flex;
+				.img {
+					width: 189upx;
+					height: 181upx;
+					margin: 24upx 45upx 0 20upx;
+					margin-top: 24upx;
+					margin-left: 20upx;
+					border-radius: 10upx;
+				}
+				.span {
+					width: 420upx;
+					margin-top: 50upx;
+					box-sizing: border-box;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					text:nth-child(1) {
+						font-size: 30upx;
+						font-weight: 700;
+						color: #191919;
+					}
+					text:nth-child(2) {
+						font-size: 26upx;
+						font-weight: 400;
+						color: #999;
+						margin-top: 10upx;
+					}
+					.span-view {
+						margin-top: 10upx;
+						margin-bottom: 44upx;
+						text {
+							font-size: 25upx;
+							color: #7e7e7e;
+							font-weight: 400;
+							// vertical-align: middle;
+						}
+					}
+				}
+			}
+		}
+	}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.system.SystemDictValueMapper">
+
+    <select id="selectByDictType" resultType="com.education.model.entity.SystemDictValue">
+        select * from system_dict_value where system_dict_id = (
+          select id from system_dict where type = #{dictType}
+        )
+    </select>
+</mapper>

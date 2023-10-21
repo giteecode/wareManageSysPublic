@@ -1,0 +1,1 @@
+alter table course_section_node add update_date datetime(0) DEFAULT NULL COMMENT '更新时间';

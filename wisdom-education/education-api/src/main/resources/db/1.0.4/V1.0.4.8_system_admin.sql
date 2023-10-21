@@ -1,0 +1,1 @@
+alter table system_admin add socket_session_id varchar(100) DEFAULT NULL COMMENT 'websocket会话id';

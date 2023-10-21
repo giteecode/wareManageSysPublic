@@ -1,0 +1,443 @@
+<template>
+	<view class="linkage" v-if="showPopup" @touchmove.stop.prevent="clear">
+		<!-- 遮罩层 -->
+		<view class="linkage-mask" @touchmove.stop.prevent="clear" v-if="maskClick" :class="[ani+'-mask', animation ? 'mask-ani' : '']" :style="{
+					'background-color': maskBgColor
+				}"
+		 @tap="hideMask(true)"></view>
+
+		<view class="linkage-content linkage--fixed" :class="[type,ani+'-content', animation ? 'content-ani' : '']">
+			<view class="linkage__header">
+				<view class="linkage__header-btn-box" @click="pickerCancel">
+					<text class="linkage__header-text">取消</text>
+				</view>
+				<view class="linkage__header-btn-box" @click="pickerConfirm">
+					<text class="linkage__header-text" :style="{color:themeColor}">确定</text>
+				</view>
+			</view>
+			<view class="linkage__box">
+				<picker-view indicator-style="height: 70rpx;" class="linkage-view" :value="pickerValue" @change="pickerChange">
+
+					<picker-view-column @click="alert('one')">
+						<!-- #ifndef APP-NVUE -->
+						<view class="picker-item" v-for="(item,index) in firstLevel" :key="index">{{item.name}}</view>
+						<!-- #endif -->
+						<!-- #ifdef APP-NVUE -->
+						<text class="picker-item" v-for="(item,index) in firstLevel" :key="index">{{item.name}}</text>
+						<!-- #endif -->
+					</picker-view-column>
+					<picker-view-column v-if="secondShow">
+						<!-- #ifndef APP-NVUE -->
+						<view class="picker-item" v-for="(item,index) in secondLevel" :key="index">{{item.name}}</view>
+						<!-- #endif -->
+						<!-- #ifdef APP-NVUE -->
+						<text class="picker-item" v-for="(item,index) in secondLevel" :key="index">{{item.name}}</text>
+						<!-- #endif -->
+
+					</picker-view-column>
+					<picker-view-column v-if="thirdShow">
+						<!-- #ifndef APP-NVUE -->
+						<view class="picker-item" v-for="(item,index) in thirdLevel" :key="index">{{item.name}}</view>
+						<!-- #endif -->
+						<!-- #ifdef APP-NVUE -->
+						<text class="picker-item" v-for="(item,index) in thirdLevel" :key="index">{{item.name}}</text>
+						<!-- #endif -->
+
+					</picker-view-column>
+
+				</picker-view>
+			</view>
+		</view>
+
+	</view>
+</template>
+
+<script>
+	export default {
+		name: "levelLinkage",
+		props: {
+			allData: {
+				type: Array,
+				default: []
+			},
+			// 开启动画
+			animation: {
+				type: Boolean,
+				default: true
+			},
+			/* 弹出层类型，可选值；
+				bottom：底部弹出层
+			*/
+			type: {
+				type: String,
+				default: 'bottom'
+			},
+			// maskClick
+			maskClick: {
+				type: Boolean,
+				default: true
+			},
+			show: {
+				type: Boolean,
+				default: true
+			},
+			maskBgColor: {
+				type: String,
+				default: 'rgba(0, 0, 0, 0.4)', //背景颜色 rgba(0, 0, 0, 0.4) 为空则调用 uni.scss
+			},
+			themeColor: {
+				type: String,
+				default: '', // 主题色
+			},
+			/* 默认值 */
+			pickerValueDefault: {
+				type: Array,
+				default () {
+					return [0, 0, 0]
+				}
+			},
+		},
+		data() {
+			return {
+				secondShow: false,
+				thirdShow: false,
+				ani: '',
+				showPopup: false,
+				pickerValue: [0, 0, 0],
+				firstLevel: [],
+				secondLevel: [],
+				thirdLevel: [],
+				emptyList: [
+					{
+						id: "",
+						name: "",
+						code: "",
+						"children":[]
+					}
+				]
+			}
+		},
+		watch: {
+			show(newValue) {
+				if (newValue) {
+					this.open()
+				} else {
+					this.close()
+				}
+			},
+			pickerValueDefault() {
+				this.init();
+			}
+		},
+		created() {
+			this.init()
+		},
+		methods: {
+			init() {
+				this.handPickValueDefault(); // 对 pickerValueDefault 做兼容处理
+				this.firstLevel = this.allData;
+				
+				this.secondShow = this.pickerValueDefault[1] >= 0 ? true : false;
+				this.thirdShow = this.pickerValueDefault[2] >= 0 ? true : false;;
+				if (this.secondShow) {
+					this.secondLevel = this.firstLevel[this.pickerValueDefault[0]].children.length == 0
+						? this.emptyList : this.firstLevel[this.pickerValueDefault[0]].children;
+				} else {
+					this.thirdShow = false;
+				}
+				
+				if(this.thirdShow){
+					this.thirdLevel = this.secondLevel[this.pickerValueDefault[1]].children.length == 0
+						? this.emptyList : this.secondLevel[this.pickerValueDefault[1]].children;
+				}
+				
+				this.pickerValue = this.pickerValueDefault;
+			},
+			handPickValueDefault() {
+				if (this.pickerValueDefault !== [0, 0, 0]) {
+					if (this.pickerValueDefault[0] > this.allData.length - 1) {
+						this.pickerValueDefault[0] = this.allData.length - 1;
+					}
+					if (this.secondShow && this.pickerValueDefault[1] > this.allData[this.pickerValueDefault[0]].children.length - 1) {
+						this.pickerValueDefault[1] = this.allData[this.pickerValueDefault[0]].children.length - 1;
+					}
+					if (this.thirdShow &&
+						this.pickerValueDefault[2] > 
+									this.allData[this.pickerValueDefault[0]].children[this.pickerValueDefault[1]].children.length - 1) {
+						this.pickerValueDefault[2] 
+									= this.allData[this.pickerValueDefault[0]].children[this.pickerValueDefault[1]].children.length - 1;
+					}
+				}
+			},
+			pickerChange(e) {
+				let changePickerValue = e.detail.value;
+				if (this.pickerValue[0] !== changePickerValue[0]) {
+					// 第一级发生滚动
+					if(this.secondShow){
+						this.secondLevel = this.firstLevel[changePickerValue[0]].children.length == 0 
+							? this.emptyList : this.firstLevel[changePickerValue[0]].children;
+						changePickerValue[1] = 0;
+					}
+					
+					if(this.thirdShow){
+						this.thirdLevel = this.secondLevel[0].children.length == 0 
+							? this.emptyList : this.secondLevel[0].children;
+						changePickerValue[2] = 0;
+					}
+				} else if (this.pickerValue[1] !== changePickerValue[1]) {
+					// 第二级滚动
+					if(this.thirdShow){
+						this.thirdLevel = this.secondLevel[changePickerValue[1]].children == 0 
+							? this.emptyList : this.secondLevel[changePickerValue[1]].children;
+						changePickerValue[2] = 0;
+					}
+				}
+				this.pickerValue = changePickerValue;
+				this._$emit('onChange');
+			},
+			_$emit(emitName) {
+				// 自定义选中项，选中内容
+				let firstPick = {};
+				let secondPick = {};
+				let thirdPick = {};
+				
+				firstPick = {
+					id: this._getFirst().id,
+					name: this._getFirst().name,
+					code: this._getFirst().code
+				}
+				if(this.secondShow){
+					secondPick = {
+						id: this._getSecond().id,
+						name: this._getSecond().name,
+						code: this._getSecond().code
+					}
+				}
+				
+				if(this.thirdShow){
+					thirdPick = {
+						id: this._getThird().id,
+						name: this._getThird().name,
+						code: this._getThird().code
+					}
+				}
+				
+				let pickObj = {
+					name: this._getLabel(),
+					value: this.pickerValue,
+					secondPick: secondPick,
+					thirdPick: thirdPick,
+					firstPick: firstPick
+				};
+				this.$emit(emitName, pickObj);
+			},
+			_getLabel() {
+				let pcikerLabel = 
+					this.firstLevel[this.pickerValue[0]].name;
+					
+				if(this.secondShow){
+					pcikerLabel = pcikerLabel + '-' +
+					this.secondLevel[this.pickerValue[1]].name
+				}
+				
+				if(this.thirdShow){
+					pcikerLabel = pcikerLabel + '-' +
+					this.thirdLevel[this.pickerValue[2]].name;
+				}
+					
+				return pcikerLabel;
+			},
+			_getSecond() {
+				if(this.secondShow){
+					return this.secondLevel[this.pickerValue[1]];
+				}
+				return this.emptyList;
+			},
+			_getFirst() {
+				return this.firstLevel[this.pickerValue[0]];
+			},
+			_getThird() {
+				if(this.thirdShow){
+					return this.thirdLevel[this.pickerValue[2]];
+				}
+				return this.emptyList;
+			},
+			clear() {
+
+			},
+			hideMask() {
+				this._$emit('onCancel');
+				this.close();
+			},
+			pickerCancel() {
+				this._$emit('onCancel');
+				this.close();
+			},
+			pickerConfirm() {
+				this._$emit('onConfirm');
+				this.close();
+			},
+			open() {
+				this.showPopup = true
+				this.$nextTick(() => {
+					setTimeout(() => {
+						this.ani = 'linkage-c-' + this.type
+					}, 100)
+				})
+			},
+			close(type) {
+				if (!this.maskClick && type) return;
+				this.ani = ''
+				this.$nextTick(() => {
+					setTimeout(() => {
+						this.showPopup = false
+					}, 300)
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.linkage {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+	}
+
+	.linkage-mask {
+		position: fixed;
+		bottom: 0;
+		top: 0;
+		left: 0;
+		right: 0;
+
+		transition-property: opacity;
+		transition-duration: 0.3s;
+		opacity: 0;
+		/* #ifndef APP-NVUE */
+		z-index: 99;
+		/* #endif */
+	}
+
+
+	.mask-ani {
+		transition-property: opacity;
+		transition-duration: 0.2s;
+	}
+
+	.linkage-c-bottom-mask {
+		opacity: 1;
+	}
+
+	.linkage-c-center-mask {
+		opacity: 1;
+	}
+
+	.linkage--fixed {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		transition-property: transform;
+		transition-duration: 0.3s;
+		transform: translateY(460rpx);
+		/* #ifndef APP-NVUE */
+		z-index: 99;
+		/* #endif */
+	}
+
+	.linkage-content {
+		background-color: #FFFFFF;
+	}
+
+	.linkage-c-content-bottom {
+		bottom: 0;
+		left: 0;
+		right: 0;
+		transform: translateY(500rpx);
+	}
+
+	.content-ani {
+		transition-property: transform, opacity;
+		transition-duration: 0.2s;
+	}
+
+	.linkage-c-bottom-content {
+		transform: translateY(0);
+	}
+
+	.linkage-c-center-content {
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	.linkage__header {
+		position: relative;
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		border-bottom-color: #f2f2f2;
+		border-bottom-style: solid;
+		border-bottom-width: 1rpx;
+	}
+
+	.linkage--fixed-top {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: space-between;
+		border-top-color: $uni-border-color;
+		border-top-style: solid;
+		border-top-width: 1rpx;
+	}
+
+	.linkage__header-btn-box {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		height: 70rpx;
+	}
+
+	.linkage__header-text {
+		text-align: center;
+		font-size: $uni-font-size-base;
+		color: #1aad19;
+		line-height: 70rpx;
+		padding-left: 40rpx;
+		padding-right: 40rpx;
+	}
+
+	.linkage__box {
+		position: relative;
+	}
+
+	.linkage-view {
+		position: relative;
+		bottom: 0;
+		left: 0;
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
+		/* #ifdef APP-NVUE */
+		width: 750rpx;
+		/* #endif */
+		height: 408rpx;
+		background-color: rgba(255, 255, 255, 1);
+	}
+
+	.picker-item {
+		text-align: center;
+		line-height: 70rpx;
+		text-overflow: ellipsis;
+		font-size: 28rpx;
+	}
+</style>

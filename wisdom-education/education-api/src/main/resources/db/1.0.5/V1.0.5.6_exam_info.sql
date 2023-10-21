@@ -1,0 +1,1 @@
+alter table exam_info add wait_correct_number int(11) DEFAULT NULL COMMENT '待批改试题数量';

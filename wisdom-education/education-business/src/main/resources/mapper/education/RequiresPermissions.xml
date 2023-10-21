@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.education.SubjectInfoMapper">
+
+    <select id="selectPageList" resultType="com.education.model.dto.SubjectInfoDto">
+        select subject.*, grade.name gradeName from subject_info subject
+        left join grade_info grade on subject.grade_info_id = grade.id
+        <where>
+
+            <if test="subjectInfo.schoolType != null">
+                and subject.school_type = #{subjectInfo.schoolType}
+            </if>
+
+            <if test="subjectInfo.gradeInfoId != null">
+                and subject.grade_info_id = #{subjectInfo.gradeInfoId}
+            </if>
+
+            <if test="subjectInfo.name != null and subjectInfo.name != ''">
+                <bind name="name" value="'%' + subjectInfo.name + '%'"/>
+                and subject.name like #{name}
+            </if>
+        </where>
+        order by subject.id desc
+    </select>
+</mapper>

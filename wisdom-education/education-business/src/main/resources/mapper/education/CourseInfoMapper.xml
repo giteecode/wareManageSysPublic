@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.education.CourseInfoMapper">
+
+    <select id="selectPageList" resultType="com.education.model.dto.CourseInfoDto">
+        SELECT
+            course.*,
+            subject.name subject_name,
+            grade.name gradeInfoName,
+            collect.student_id
+        FROM
+           course_info course
+        LEFT JOIN subject_info subject ON course.subject_id = subject.id
+        LEFT JOIN grade_info grade ON course.grade_info_id = grade.id
+        LEFT JOIN student_course_collect collect ON course.id = collect.course_id
+       <where>
+           <if test="courseInfo.name != null and courseInfo.name != ''">
+               <bind name="name" value="'%' + courseInfo.name + '%'"/>
+               and course.name like #{name}
+           </if>
+
+           <if test="courseInfo.recommendIndexFlag != null">
+               and course.recommend_index_flag = #{courseInfo.recommendIndexFlag}
+           </if>
+
+           <if test="courseInfo.gradeInfoId != null">
+               and course.grade_info_id = #{courseInfo.gradeInfoId}
+           </if>
+
+           <if test="courseInfo.subjectId != null">
+               and course.subject_id = #{courseInfo.subjectId}
+           </if>
+
+           <if test="courseInfo.status != null">
+               and course.status = #{courseInfo.status}
+           </if>
+       </where>
+       order by course.id desc
+    </select>
+
+
+    <select id="getRecommendList" resultType="com.education.model.dto.CourseInfoDto">
+        SELECT
+            course.*,
+            collect.student_id,
+            subject.name subject_name
+        FROM
+            course_info course
+                LEFT JOIN student_course_collect collect ON course.id = collect.course_id
+                LEFT JOIN subject_info subject ON course.subject_id = subject.id
+        WHERE course.recommend_index_flag = 1 and course.grade_info_id = #{gradeInfoId} and course.status = 1 LIMIT 6
+    </select>
+</mapper>

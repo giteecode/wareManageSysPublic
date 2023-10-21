@@ -1,0 +1,30 @@
+/*容器*/
+.nav-box{
+	width: 100%;
+	height: 96upx;
+	display: flex;
+	align-items: center;
+	padding:0 4vw;
+}
+/*左侧足迹*/
+.nav-foot{
+	font-size: 56upx;
+	margin-left: 40upx;
+}
+/*搜索框*/
+.nav-search{
+	flex: 1;
+	height:70upx;
+	background-color: #fff;
+	border-radius: 35upx;
+}
+/*搜索图标*/
+.nav-search .nav-search-icon{
+	font-size: 40upx;
+	margin-left: 30upx;
+}
+/*右侧收藏*/
+.nav-favor{
+	font-size: 56upx;
+	margin-left:30upx;
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.education.CourseSectionMapper">
+
+    <resultMap id="courseSectionDto" autoMapping="true" type="com.education.model.dto.CourseSectionDto">
+        <id column="id" property="id"></id>
+        <collection property="courseSectionNodeList" ofType="com.education.model.entity.CourseSectionNode">
+            <id column="section_node_id" property="id"></id>
+            <result column="section_title" property="title"></result>
+            <result column="video_url" property="videoUrl"></result>
+            <result column="size" property="size"></result>
+            <result column="video_name" property="videoName"></result>
+            <result column="duration" property="duration"></result>
+            <result column="enclosure" property="enclosure"></result>
+            <result column="free_flag" property="freeFlag"></result>
+            <result column="create_date" property="createDate"></result>
+            <result column="synopsis" property="synopsis"></result>
+        </collection>
+    </resultMap>
+
+    <select id="selectListByCourseId" resultMap="courseSectionDto">
+        SELECT
+            a.id,
+            a.title,
+            a.course_id,
+            b.id section_node_id,
+            b.title section_title,
+            b.video_url,
+            b.video_name,
+            b.width,
+            b.height,
+            b.enclosure,
+            b.create_date,
+            b.synopsis,
+            b.free_flag,
+            b.duration,
+            b.size
+        FROM
+            course_section a
+            LEFT JOIN course_section_node b ON a.id = b.course_section_id
+        WHERE
+            a.course_id = #{courseId} ORDER BY a.id ASC
+    </select>
+</mapper>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.education.ExamInfoMapper">
+
+    <select id="selectStudentExamList" resultType="com.education.model.dto.StudentExamInfoDto">
+        select
+          exam.*, subject.name subject_name, paper.name test_paper_info_name, paper.question_number, paper.mark testPaperInfoMark
+        from exam_info exam left join test_paper_info paper
+        on exam.test_paper_info_id = paper.id left join subject_info subject
+        on paper.subject_id = subject.id
+
+        <where>
+            <if test="studentExamInfoDto.studentId != null">
+                and exam.student_id = #{studentExamInfoDto.studentId}
+            </if>
+
+            <if test="studentExamInfoDto.subjectId != null">
+                and paper.subject_id = #{studentExamInfoDto.subjectId}
+            </if>
+        </where>
+        order by exam.id desc
+    </select>
+
+    <select id="selectById" resultType="com.education.model.dto.StudentExamInfoDto">
+         select exam.*, paper.name test_paper_info_name, paper.question_number, paper.exam_time testPaperExamTime
+         from exam_info exam left join test_paper_info paper
+         on exam.test_paper_info_id = paper.id where exam.id = #{id}
+    </select>
+
+    <select id="selectExamList" resultType="com.education.model.dto.StudentExamInfoDto">
+        select
+        exam.*, grade.name grade_name, subject.name subject_name, paper.mark testPaperInfoMark, paper.name test_paper_info_name, student.name student_name
+        from exam_info exam left join test_paper_info paper on exam.test_paper_info_id = paper.id
+        left join subject_info subject on paper.subject_id = subject.id
+        left join student_info student on exam.student_id = student.id
+        left join grade_info grade on student.grade_info_id = grade.id
+
+        <where>
+            <if test="studentExamInfoDto.testPaperInfoName != null and studentExamInfoDto.testPaperInfoName != ''">
+                <bind name="name" value="'%' + studentExamInfoDto.testPaperInfoName + '%'"/>
+                and (paper.name like #{name} or student.name like #{name})
+            </if>
+
+            <if test="studentExamInfoDto.subjectId != null">
+                and subject.id = #{studentExamInfoDto.subjectId}
+            </if>
+
+            <if test="studentExamInfoDto.gradeInfoId != null">
+                and grade.id = #{studentExamInfoDto.gradeInfoId}
+            </if>
+
+            <if test="studentExamInfoDto.correctFlag != null ">
+                and exam.correct_flag = #{studentExamInfoDto.correctFlag}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectExamReportList" resultType="com.education.model.response.TestPaperInfoReport">
+        SELECT
+            paper.id,
+            paper.name,
+            paper.mark,
+            paper.exam_number,
+            paper.grade_info_id,
+            paper.subject_id,
+            grade.name grade_info_name,
+            subject.name subject_name,
+            a.avg_source
+        FROM
+            ( SELECT test_paper_info_id, CAST(AVG(mark) AS DECIMAL(10, 2)) avg_source FROM exam_info where correct_flag = 1 GROUP BY test_paper_info_id ) a
+            LEFT JOIN test_paper_info paper ON a.test_paper_info_id = paper.id
+            LEFT JOIN subject_info subject ON paper.subject_id = subject.id
+            LEFT JOIN grade_info grade ON grade.id = paper.grade_info_id
+           <where>
+               <if test="testPaperInfo.name != null and testPaperInfo.name != ''">
+                   <bind name="name" value="'%' + testPaperInfo.name + '%'"/>
+                   and paper.name like #{name}
+               </if>
+
+               <if test="testPaperInfo.gradeInfoId != null">
+                   and paper.grade_info_id = #{testPaperInfo.gradeInfoId}
+               </if>
+
+               <if test="testPaperInfo.subjectId != null">
+                   and paper.subject_id = #{testPaperInfo.subjectId}
+               </if>
+           </where>
+        ORDER BY
+            paper.sort ASC
+    </select>
+
+
+    <select id="selectExamListByTestPaperInfoId" resultType="com.education.model.response.ExamRanking">
+        SELECT
+            exam.id,
+            exam.create_date,
+            exam.mark,
+            exam.system_mark,
+            exam.teacher_mark,
+            exam.exam_time,
+            paper.name test_paper_info_name,
+            student.name student_name,
+            case student.sex when 1 then '男' when 2 then '女' else '未知' end sex
+        FROM
+            exam_info exam
+            LEFT JOIN test_paper_info paper ON exam.test_paper_info_id = paper.id
+            LEFT JOIN student_info student ON student.id = exam.student_id
+        WHERE
+            exam.test_paper_info_id = #{testPaperInfoId}
+            AND exam.correct_flag = 1
+        ORDER BY
+	    exam.mark DESC
+    </select>
+
+    <select id="selectExamInfoDetail" parameterType="map" resultType="com.education.model.response.ExamAnalyse">
+        select
+            round(avg(mark), 2) avg_exam_mark,
+            round(avg(exam_time_long_value), 0) avg_exam_time,
+            min(mark) min_exam_mark,
+            max(mark) max_exam_mark,
+            <!-- 及格人数 -->
+            sum(case when mark &gt;= #{passMark} and mark &lt;= #{mark} then 1 else 0 end) as pass_exam_number,
+            <!-- 优秀人数 -->
+            sum(case when mark &gt;= #{niceMark} and mark &lt;= #{mark} then 1 else 0 end) as nice_exam_number
+        from exam_info where test_paper_info_id = #{testPaperInfoId} and correct_flag = 1
+    </select>
+
+    <!-- 近七天考试记录统计 -->
+    <select id="countByDateTime" resultType="com.education.model.dto.ExamCount">
+        SELECT
+            a.day_group,
+            sum(a.exam_number) exam_number
+        FROM
+        (
+        SELECT
+        DATE_FORMAT(create_date, '%Y-%m-%d') day_group,
+        count(test_paper_info_id) exam_number,
+        test_paper_info_id
+        FROM
+        exam_info
+        <where>
+            <if test="startTime != null and startTime != ''">
+                and create_date &gt;= #{startTime}
+            </if>
+
+            <if test="endTime != null and endTime != ''">
+                and create_date &lt;= #{endTime}
+            </if>
+        </where>
+        GROUP BY
+        day_group,
+        test_paper_info_id
+        )
+        a GROUP BY a.day_group
+    </select>
+
+    <select id="getSubjectList" resultType="com.education.model.entity.SubjectInfo">
+        SELECT
+           subject.id,
+           subject.name
+        FROM
+            exam_info exam
+                INNER JOIN test_paper_info paper ON exam.test_paper_info_id = paper.id
+                INNER JOIN subject_info subject ON paper.subject_id = subject.id
+        GROUP BY subject.id
+    </select>
+</mapper>

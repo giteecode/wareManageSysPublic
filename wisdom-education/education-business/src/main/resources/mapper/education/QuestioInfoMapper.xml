@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.education.QuestionInfoMapper">
+
+    <resultMap id="questionInfoDtoResultMap" autoMapping="true" type="com.education.model.dto.QuestionInfoDto">
+        <id column="id" property="id"></id>
+        <collection property="languagePointsInfoList" ofType="com.education.model.entity.LanguagePointsInfo">
+            <id property="id" column="language_points_info_id"></id>
+            <id property="name" column="name"></id>
+        </collection>
+    </resultMap>
+
+    <sql id="field">
+        question.id,
+        question.content,
+        question.subject_id,
+        question.video_url,
+        question.answer,
+        question.school_type,
+        case question_type when 1 then '单选题' when 2 then '多选题' when 3 then '填空题' when 4 then '综合题' when 5 then
+        '不定项' when 6 then '判断题' else '未知' end as questionTypeName,
+        question.question_type,
+        question.grade_info_Id,
+        question.options,
+        question.analysis,
+        question.summarize,
+        question.create_date
+    </sql>
+
+    <select id="selectPageList" resultType="com.education.model.dto.QuestionInfoDto">
+        select
+          grade.name gradeInfoName,
+          subject.name subjectName,
+         <include refid="field"/>
+        from question_info question left join subject_info subject
+        on question.subject_id = subject.id
+        left join grade_info grade on question.grade_info_id = grade.id
+        <where>
+
+            <if test="questionInfo.schoolType != null">
+                and question.school_type = #{questionInfo.schoolType}
+            </if>
+
+            <if test="questionInfo.gradeInfoId != null">
+                and question.grade_info_id = #{questionInfo.gradeInfoId}
+            </if>
+
+            <if test="questionInfo.subjectId != null">
+                and question.subject_id = #{questionInfo.subjectId}
+            </if>
+
+            <if test="questionInfo.questionType != null">
+                and question.question_type = #{questionInfo.questionType}
+            </if>
+
+            <if test="questionInfo.content != null and questionInfo.content != ''">
+                <bind name="content" value="'%' + questionInfo.content + '%'"/>
+                and question.content like #{content}
+            </if>
+
+            <if test="questionInfo.questionIds != null and questionInfo.questionIds.size() > 0">
+                and question.id not in
+                <foreach collection="questionInfo.questionIds" separator="," open="(" close=")" item="id">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        order by question.id desc
+    </select>
+
+    <select id="selectById" resultMap="questionInfoDtoResultMap">
+        select <include refid="field"/>, b.language_points_info_id, points_info.name from question_info question left join question_language_points_info b
+        on question.id = b.question_info_id left join language_points_info points_info on b.language_points_info_id = points_info.id
+        where question.id = #{id}
+    </select>
+
+    <select id="getNumberByQuestionTypeGroup" resultType="com.education.model.dto.QuestionInfoDto">
+        SELECT COUNT(1) number_group_by_type, question_type from question_info
+        where grade_info_id = #{gradeInfoId} and subject_id = #{subjectId}
+        GROUP BY question_type
+    </select>
+</mapper>

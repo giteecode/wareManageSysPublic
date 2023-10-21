@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.education.VideoWatchProgressMapper">
+
+    <update id="updateWatchTime" parameterType="com.education.model.entity.VideoWatchProgress">
+        update video_watch_progress set watch_end = #{watchEnd}, watch_time = watch_time + #{watchTime}, update_date = #{updateDate}
+            where student_id = #{studentId} and section_node_id = #{sectionNodeId}
+    </update>
+</mapper>

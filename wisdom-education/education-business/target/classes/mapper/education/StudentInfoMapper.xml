@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.education.StudentInfoMapper">
+
+
+    <!-- 学员列表 -->
+    <select id="selectPageList" resultType="com.education.model.dto.StudentInfoDto">
+        select student.*, grade.name grade_name from student_info student left join grade_info grade
+        on student.grade_info_id = grade.id
+        <where>
+            <if test="studentInfo.gradeInfoId != null">
+                and student.grade_info_id = #{studentInfo.gradeInfoId}
+            </if>
+
+            <if test="studentInfo.name != null and studentInfo.name != ''">
+                <bind name="name" value="'%' + studentInfo.name + '%'"/>
+                and student.name like #{name} or student.mobile like #{name}
+            </if>
+        </where>
+        order by student.id desc
+    </select>
+
+</mapper>

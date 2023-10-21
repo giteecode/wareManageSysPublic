@@ -1,0 +1,143 @@
+host: 127.0.0.1
+oss:
+  upload:
+    secretId: NI6phW86sI6Rcndzwb/FHbvD0dvb+iB83DXS+SD9XRw3MB1+20811/aCA/TuoJW+
+    secretKey: 9BwDdfZqAnoRu5+wFgXnPYtaaHituPj+dellavK0JPu1akjzj3vDlq/Pghv0jfPc
+    appId: 1253719016
+    platform: tencent
+    region: ap-nanjing
+queue:
+  exam: exam_queue
+server:
+  port: 8009
+canal:
+  openFlag: false
+  host: 110.40.147.26
+## spring jdbc配置
+spring:
+  flyway:
+    sql-migration-separator: _ #分隔符
+    clean-disabled: true #禁用clean操作
+    enabled: true #使flyway生效
+    baseline-on-migrate: true #初始化时如果不存在迁移记录表，默认新建一个
+    out-of-order: true #防止开发环境下漏掉没来得及apply的文件，产品环境最好设为false
+    ignore-ignored-migrations: true
+    locations: classpath:/db
+    url: jdbc:mysql://${host}:3306/education_test?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false&allowMultiQueries=true
+    user: mpw:1N5YKS2IbQIAMdDFU+nxUQ==
+    password: mpw:vKb2KKlkG40K0ebBqG/QgA==
+  redis:
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: 30
+        max-idle: 8
+        min-idle: 0
+    host: ${host}
+    port: 6379
+    password: taoge
+  rabbitmq:
+    host: 120.79.144.34
+    port: 5672
+    username: rabbitmq
+    password: china@zjt
+    virtual-host: /
+    publisher-returns: true
+    listener:
+      simple:
+        acknowledge-mode: manual #开启手动确认模式
+    publisher-confirm-type: correlated
+  freemarker:
+    template-loader-path: classpath:/template/
+    suffix: .ftl
+    charset: utf-8
+  ## 文件上传大小限制
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+  mail:
+    host: smtp.163.com
+    port: 25
+    username: 18296640717@163.com
+    password: KIZMPBYPLMWTIZGP
+    properties:
+      mail:
+        #表示开启 DEBUG 模式，这样，邮件发送过程的日志会在控制台打印出来，方便排查错误
+        debug: true
+lbs:
+  key: MYOBZ-OOEW3-KYC3G-YWDXA-DMQJ6-SPBMH
+
+#rabbitmq 队列配置
+rabbitmq:
+  exam:
+    queue: test_exam_queue
+    routing-key: test_exam_queue_routing_key
+    direct-exchange: test_exam_direct_exchange
+  canal:
+    queue: test_canal_queue
+    routing-key: test_canal_queue_routing_key
+    direct-exchange: test_canal_direct_exchange
+ueditor:
+  configFileName: oss-config.json
+
+# 微信公众号配置
+weChat:
+  appId: wxc5d3bf3c1fbf6d25
+  token: education
+  appSecret: cf05150f801935391f29d73695f04300
+
+# 配置日志文件输出目录及文件
+logging:
+  file:
+    path: /root/jar
+    name: education.log
+
+# sharding jdbc 读写分离配置
+sharding:
+  jdbc:
+    datasource:
+      names: educationmaster,educationslave
+      educationmaster:
+        type: com.zaxxer.hikari.HikariDataSource
+        jdbc-url: jdbc:mysql://${host}:3306/education_test?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowMultiQueries=true&serverTimezone=GMT%2B8
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        idle-timeout: 60000
+        #数据库连接超时时间
+        connection-timeout: 30000
+        #连接池最大连接数，默认是10
+        maximum-pool-size: 60
+        #最小空闲连接数量
+        minimum-idle: 10
+        # 此属性控制池中连接的最长生命周期，值0表示无限生命周期
+        max-lifetime: 60000
+        username: mpw:1N5YKS2IbQIAMdDFU+nxUQ==
+        password: mpw:vKb2KKlkG40K0ebBqG/QgA==
+      educationslave:
+        type: com.zaxxer.hikari.HikariDataSource
+        jdbc-url: jdbc:mysql://${host}:3306/education_test?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowMultiQueries=true&serverTimezone=GMT%2B8
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        idle-timeout: 60000
+        #数据库连接超时时间
+        connection-timeout: 30000
+        #连接池最大连接数，默认是10
+        maximum-pool-size: 60
+        #最小空闲连接数量
+        minimum-idle: 10
+        # 此属性控制池中连接的最长生命周期，值0表示无限生命周期
+        max-lifetime: 60000
+        username: mpw:1N5YKS2IbQIAMdDFU+nxUQ==
+        password: mpw:vKb2KKlkG40K0ebBqG/QgA==
+    config:
+      masterslave: # 配置读写分离
+        load-balance-algorithm-type: round_robin # 配置从库选择策略，提供轮询与随机，这里选择用轮询//random 随机 //round_robin 轮询
+        name: db1s2
+        master-data-source-name: educationmaster
+        slave-data-source-names: educationslave
+      props:
+        sql:
+          show: true
+
+ip2region:
+  xdb:
+    path: classpath:ip2region.xdb

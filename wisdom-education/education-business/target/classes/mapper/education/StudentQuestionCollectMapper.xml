@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.education.business.mapper.education.StudentQuestionCollectMapper">
+
+    <select id="selectPageList" resultType="com.education.model.entity.QuestionInfo">
+        SELECT
+            question.id,
+            question.content,
+            question.question_type,
+            question.answer,
+            question.`options`,
+            question.subject_id,
+            question.summarize,
+            question.video_url
+        FROM
+            question_info question
+                INNER JOIN student_question_collect colletc ON question.id = colletc.question_info_id
+        WHERE
+            colletc.student.id = #{studentId} ORDER BY colletc.id DESC
+    </select>
+</mapper>

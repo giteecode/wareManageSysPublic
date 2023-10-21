@@ -1,0 +1,1 @@
+ALTER TABLE exam_question_answer ADD COLUMN test_paper_id int(11) NOT NULL COMMENT '试卷id';

@@ -1,0 +1,1 @@
+alter table test_paper_question_info add correct_admin_id int(11) DEFAULT NULL COMMENT '批改管理员id';

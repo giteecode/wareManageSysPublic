@@ -1,0 +1,118 @@
+host: 127.0.0.1
+server:
+  port: 80
+# oss 文件上传配置
+oss:
+  upload:
+    secretId: NI6phW86sI6Rcndzwb/FHbvD0dvb+iB83DXS+SD9XRw3MB1+20811/aCA/TuoJW+
+    secretKey: 9BwDdfZqAnoRu5+wFgXnPYtaaHituPj+dellavK0JPu1akjzj3vDlq/Pghv0jfPc
+    appId: 1253719016
+    platform: tencent
+    region: ap-nanjing
+    localTmpFileUploadPath: f:\\uploads\\
+## spring jdbc配置
+spring:
+  # flyway 数据库管理工具
+  flyway:
+    sql-migration-separator: _ #分隔符
+    clean-disabled: true #禁用clean操作
+    enabled: true #使flyway生效
+    baseline-on-migrate: true #初始化时如果不存在迁移记录表，默认新建一个
+    out-of-order: true #防止开发环境下漏掉没来得及apply的文件，产品环境最好设为false
+    ignore-ignored-migrations: true
+    locations: classpath:/db
+    url: jdbc:mysql://${host}:3306/education?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false&allowMultiQueries=true
+    user: root
+    password: 123456
+
+  rabbitmq:
+    host: 120.79.144.34
+    port: 5672
+    username: rabbitmq
+    password: china@zjt
+    virtual-host: /
+    publisher-returns: true
+    listener:
+      simple:
+        acknowledge-mode: manual #开启手动确认模式
+    publisher-confirm-type: correlated
+  redis:
+    jedis:
+      pool:
+        max-active: 20
+        max-wait: 30
+        max-idle: 8
+        min-idle: 0
+    host: ${host}
+    password: 123456
+    port: 6379
+  ## 文件上传大小限制
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+  mail:
+    host: smtp.163.com
+    port: 25
+    username: 18296640717@163.com
+    password: KIZMPBYPLMWTIZGP
+    properties:
+      mail:
+        #表示开启 DEBUG 模式，这样，邮件发送过程的日志会在控制台打印出来，方便排查错误
+        debug: true
+ueditor:
+  configFileName: oss-config-dev.json
+# 微信公众号配置
+weChat:
+  appId: wx7874d0c23d07e2aa
+  token: education
+  appSecret: e03f5ab03906d4d943675c233d4c3cb3
+
+#rabbitmq 队列配置
+rabbitmq:
+  exam:
+   queue: dev_exam_queue
+   routing-key: dev_exam_queue_routing_key
+   direct-exchange: dev_exam_direct_exchange
+  canal:
+    queue: dev_canal_queue
+    routing-key: dev_canal_queue_routing_key
+    direct-exchange: dev_canal_direct_exchange
+
+
+# sharding jdbc 读写分离配置
+sharding:
+  jdbc:
+    datasource:
+      names: educationmaster,educationslave
+      educationmaster:
+        maximum-pool-size: 50
+          #最小空闲连接数量
+        minimum-idle: 10
+        type: com.zaxxer.hikari.HikariDataSource
+        jdbc-url: jdbc:mysql://${host}:3306/education?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowMultiQueries=true&serverTimezone=GMT%2B8
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: root
+        password: 123456
+      educationslave:
+        type: com.zaxxer.hikari.HikariDataSource
+        jdbc-url: jdbc:mysql://${host}:3306/education?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowMultiQueries=true&serverTimezone=GMT%2B8
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: root
+        password: 123456
+    config:
+      masterslave: # 配置读写分离
+        load-balance-algorithm-type: round_robin # 配置从库选择策略，提供轮询与随机，这里选择用轮询//random 随机 //round_robin 轮询
+        name: db1s2
+        master-data-source-name: educationmaster
+        slave-data-source-names: educationslave
+      props:
+        sql:
+          show: true
+logging:
+  file:
+    path: F:\\upoads\\logs
+    name: education.log
+ip2region:
+  xdb:
+    path: classpath:ip2region.xdb

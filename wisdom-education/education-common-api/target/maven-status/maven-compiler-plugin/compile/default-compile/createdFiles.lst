@@ -1,0 +1,7 @@
+com\education\core\controller\UeditorController.class
+com\education\core\controller\DictController.class
+com\education\core\controller\UploadController.class
+com\education\core\controller\ImageController.class
+com\education\core\controller\DictValueController.class
+com\education\core\controller\UploadController$1.class
+com\education\core\controller\ApiController.class
