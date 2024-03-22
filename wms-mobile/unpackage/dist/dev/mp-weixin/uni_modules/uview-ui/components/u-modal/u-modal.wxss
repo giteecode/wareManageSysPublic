@@ -1,0 +1,75 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+view.data-v-0156a215, scroll-view.data-v-0156a215, swiper-item.data-v-0156a215 {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
+  align-items: stretch;
+  align-content: flex-start;
+}
+.u-modal.data-v-0156a215 {
+  width: 650rpx;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.u-modal__title.data-v-0156a215 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #606266;
+  text-align: center;
+  padding-top: 25px;
+}
+.u-modal__content.data-v-0156a215 {
+  padding: 12px 25px 25px 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.u-modal__content__text.data-v-0156a215 {
+  font-size: 15px;
+  color: #606266;
+  flex: 1;
+}
+.u-modal__button-group.data-v-0156a215 {
+  display: flex;
+  flex-direction: row;
+}
+.u-modal__button-group--confirm-button.data-v-0156a215 {
+  flex-direction: column;
+  padding: 0px 25px 15px 25px;
+}
+.u-modal__button-group__wrapper.data-v-0156a215 {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+}
+.u-modal__button-group__wrapper--confirm.data-v-0156a215, .u-modal__button-group__wrapper--only-cancel.data-v-0156a215 {
+  border-bottom-right-radius: 6px;
+}
+.u-modal__button-group__wrapper--cancel.data-v-0156a215, .u-modal__button-group__wrapper--only-confirm.data-v-0156a215 {
+  border-bottom-left-radius: 6px;
+}
+.u-modal__button-group__wrapper--hover.data-v-0156a215 {
+  background-color: #f3f4f6;
+}
+.u-modal__button-group__wrapper__text.data-v-0156a215 {
+  color: #606266;
+  font-size: 16px;
+  text-align: center;
+}
+

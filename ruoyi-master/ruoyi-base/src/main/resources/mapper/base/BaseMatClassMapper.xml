@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.base.mapper.BaseMatClassMapper">
+    
+    <resultMap type="BaseMatClass" id="BaseMatClassResult">
+        <result property="classId"    column="class_id"    />
+        <result property="classCode"    column="class_code"    />
+        <result property="className"    column="class_name"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBaseMatClassVo">
+        select class_id, class_code, class_name, del_flag, create_by, create_time, update_by, update_time from base_mat_class
+    </sql>
+
+    <select id="selectBaseMatClassList" parameterType="BaseMatClass" resultMap="BaseMatClassResult">
+        <include refid="selectBaseMatClassVo"/>
+        WHERE del_flag = 0
+        <if test="classCode != null  and classCode != ''"> and class_code = #{classCode}</if>
+        <if test="className != null  and className != ''"> and class_name like concat('%', #{className}, '%')</if>
+    </select>
+    
+    <select id="selectBaseMatClassByClassId" parameterType="Long" resultMap="BaseMatClassResult">
+        <include refid="selectBaseMatClassVo"/>
+        where del_flag = 0 AND class_id = #{classId}
+    </select>
+
+    <select id="selectBaseMatClassNameByClassCode" resultType="java.lang.String">
+        SELECT class_name FROM base_mat_class WHERE class_code = #{classCode} AND del_flag = 0
+    </select>
+        
+    <insert id="insertBaseMatClass" parameterType="BaseMatClass" useGeneratedKeys="true" keyProperty="classId">
+        insert into base_mat_class
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classCode != null">class_code,</if>
+            <if test="className != null">class_name,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="classCode != null">#{classCode},</if>
+            <if test="className != null">#{className},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaseMatClass" parameterType="BaseMatClass">
+        update base_mat_class
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="classCode != null">class_code = #{classCode},</if>
+            <if test="className != null">class_name = #{className},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where class_id = #{classId}
+    </update>
+
+    <update id="deleteBaseMatClassByClassId" parameterType="Long">
+        update base_mat_class set del_flag = 1 where class_id = #{classId}
+    </update>
+
+    <update id="deleteBaseMatClassByClassIds" parameterType="String">
+        update base_mat_class set del_flag = 1 where class_id in
+        <foreach item="classId" collection="array" open="(" separator="," close=")">
+            #{classId}
+        </foreach>
+    </update>
+</mapper>

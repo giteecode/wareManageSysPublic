@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.stock.mapper.StockOutOrderMapper">
+    
+    <resultMap type="StockOutOrder" id="StockOutOrderResult">
+        <result property="orderId"    column="order_id"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="orderType"    column="order_type"    />
+        <result property="prodOrderNo"    column="prod_order_no"    />
+        <result property="warehouseCode"    column="warehouse_code"    />
+        <result property="workshopCode"    column="workshop_code"    />
+        <result property="orderReason"    column="order_reason"    />
+        <result property="matCode"    column="mat_code"    />
+        <result property="matName"    column="mat_name"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="warehouseKeeper"    column="warehouse_keeper"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectStockOutOrderVo">
+        select order_id, order_no, order_type, prod_order_no, warehouse_code, workshop_code, order_reason, mat_code, mat_name, quantity, order_status, warehouse_keeper, del_flag, create_by, create_time, update_by, update_time from stock_out_order
+    </sql>
+
+    <select id="selectStockOutOrderTotal" resultType="java.util.Map">
+        SELECT
+            COUNT(order_type = 'production' OR NULL) AS production,
+            COUNT(order_type = 'common' OR NULL) AS common
+        FROM stock_out_order
+        WHERE del_flag = 0
+        <if test="selectDate != null">
+            AND date_format(create_time,'%y%m%d') = date_format(#{selectDate},'%y%m%d')
+        </if>
+    </select>
+
+    <select id="selectStockOutOrderList" parameterType="StockOutOrder" resultMap="StockOutOrderResult">
+        <include refid="selectStockOutOrderVo"/>
+        WHERE del_flag = 0
+        <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+        <if test="orderType != null  and orderType != ''"> and order_type = #{orderType}</if>
+        <if test="prodOrderNo != null  and prodOrderNo != ''"> and prod_order_no = #{prodOrderNo}</if>
+        <if test="warehouseCode != null  and warehouseCode != ''"> and warehouse_code = #{warehouseCode}</if>
+        <if test="workshopCode != null  and workshopCode != ''"> and workshop_code = #{workshopCode}</if>
+        <if test="orderReason != null  and orderReason != ''"> and order_reason = #{orderReason}</if>
+        <if test="matCode != null  and matCode != ''"> and mat_code = #{matCode}</if>
+        <if test="matName != null  and matName != ''"> and mat_name like concat('%', #{matName}, '%')</if>
+        <if test="quantity != null "> and quantity = #{quantity}</if>
+        <if test="orderStatus != null  and orderStatus != ''"> and order_status = #{orderStatus}</if>
+        <if test="warehouseKeeper != null  and warehouseKeeper != ''"> and warehouse_keeper = #{warehouseKeeper}</if>
+        <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+            AND date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+        </if>
+        <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+            AND date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+        </if>
+        ORDER BY create_time DESC
+    </select>
+    
+    <select id="selectStockOutOrderByOrderId" parameterType="Long" resultMap="StockOutOrderResult">
+        <include refid="selectStockOutOrderVo"/>
+        where del_flag = 0 AND order_id = #{orderId}
+    </select>
+
+    <select id="selectStockOutOrderByOrderNo" resultMap="StockOutOrderResult">
+        <include refid="selectStockOutOrderVo"/>
+        where del_flag = 0 AND order_no = #{orderNo}
+    </select>
+        
+    <insert id="insertStockOutOrder" parameterType="StockOutOrder" useGeneratedKeys="true" keyProperty="orderId">
+        insert into stock_out_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null">order_no,</if>
+            <if test="orderType != null">order_type,</if>
+            <if test="prodOrderNo != null">prod_order_no,</if>
+            <if test="warehouseCode != null">warehouse_code,</if>
+            <if test="workshopCode != null">workshop_code,</if>
+            <if test="orderReason != null">order_reason,</if>
+            <if test="matCode != null">mat_code,</if>
+            <if test="matName != null">mat_name,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="orderStatus != null">order_status,</if>
+            <if test="warehouseKeeper != null">warehouse_keeper,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="orderType != null">#{orderType},</if>
+            <if test="prodOrderNo != null">#{prodOrderNo},</if>
+            <if test="warehouseCode != null">#{warehouseCode},</if>
+            <if test="workshopCode != null">#{workshopCode},</if>
+            <if test="orderReason != null">#{orderReason},</if>
+            <if test="matCode != null">#{matCode},</if>
+            <if test="matName != null">#{matName},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="warehouseKeeper != null">#{warehouseKeeper},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStockOutOrder" parameterType="StockOutOrder">
+        update stock_out_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="orderType != null">order_type = #{orderType},</if>
+            <if test="prodOrderNo != null">prod_order_no = #{prodOrderNo},</if>
+            <if test="warehouseCode != null">warehouse_code = #{warehouseCode},</if>
+            <if test="workshopCode != null">workshop_code = #{workshopCode},</if>
+            <if test="orderReason != null">order_reason = #{orderReason},</if>
+            <if test="matCode != null">mat_code = #{matCode},</if>
+            <if test="matName != null">mat_name = #{matName},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+            <if test="warehouseKeeper != null">warehouse_keeper = #{warehouseKeeper},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where order_id = #{orderId}
+    </update>
+
+    <update id="deleteStockOutOrderByOrderId" parameterType="Long">
+        update stock_out_order SET del_flag = 1 where order_id = #{orderId}
+    </update>
+
+    <update id="deleteStockOutOrderByOrderIds" parameterType="String">
+        update stock_out_order SET del_flag = 1 where order_id in
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </update>
+</mapper>

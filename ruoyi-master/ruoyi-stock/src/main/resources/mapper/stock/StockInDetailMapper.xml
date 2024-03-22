@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.stock.mapper.StockInDetailMapper">
+    
+    <resultMap type="StockInDetail" id="StockInDetailResult">
+        <result property="detailId"    column="detail_id"    />
+        <result property="warehouseCode"    column="warehouse_code"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="lineNo"    column="line_no"    />
+        <result property="matCode"    column="mat_code"    />
+        <result property="matName"    column="mat_name"    />
+        <result property="fdCode"    column="fd_code"    />
+        <result property="figNum"    column="fig_num"    />
+        <result property="matGroup"    column="mat_group"    />
+        <result property="matClass"    column="mat_class"    />
+        <result property="unitCode"    column="unit_code"    />
+        <result property="labelId"    column="label_id"    />
+        <result property="batch"    column="batch"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="qualifiedQuantity"    column="qualified_quantity"    />
+        <result property="stockInQuantity"    column="stock_in_quantity"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="supplierCode"    column="supplier_code"    />
+        <result property="supplierName"    column="supplier_name"    />
+        <result property="prodTime"    column="prod_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectStockInDetailVo">
+        select detail_id, warehouse_code, order_no, line_no, mat_code, mat_name, fd_code, fig_num, mat_group, mat_class, unit_code, label_id, batch, quantity, qualified_quantity, stock_in_quantity, unit_price, supplier_code, supplier_name, prod_time, del_flag, create_by, create_time, update_by, update_time from stock_in_detail
+    </sql>
+
+    <select id="selectStockInDetailList" parameterType="StockInDetail" resultMap="StockInDetailResult">
+        <include refid="selectStockInDetailVo"/>
+        WHERE del_flag = 0
+        <if test="warehouseCode != null  and warehouseCode != ''"> and warehouse_code = #{warehouseCode}</if>
+        <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+        <if test="lineNo != null "> and line_no = #{lineNo}</if>
+        <if test="matCode != null  and matCode != ''"> and mat_code = #{matCode}</if>
+        <if test="matName != null  and matName != ''"> and mat_name like concat('%', #{matName}, '%')</if>
+        <if test="fdCode != null  and fdCode != ''"> and fd_code = #{fdCode}</if>
+        <if test="figNum != null  and figNum != ''"> and fig_num = #{figNum}</if>
+        <if test="matGroup != null  and matGroup != ''"> and mat_group = #{matGroup}</if>
+        <if test="matClass != null  and matClass != ''"> and mat_class = #{matClass}</if>
+        <if test="labelId != null  and labelId != ''"> and unit_code = #{labelId}</if>
+        <if test="unitCode != null  and unitCode != ''"> and label_id = #{unitCode}</if>
+        <if test="batch != null  and batch != ''"> and batch = #{batch}</if>
+        <if test="quantity != null "> and quantity = #{quantity}</if>
+        <if test="qualifiedQuantity != null "> and qualified_quantity = #{qualifiedQuantity}</if>
+        <if test="stockInQuantity != null "> and stock_in_quantity = #{stockInQuantity}</if>
+        <if test="unitPrice != null "> and unit_price = #{unitPrice}</if>
+        <if test="supplierCode != null  and supplierCode != ''"> and supplier_code = #{supplierCode}</if>
+        <if test="supplierName != null  and supplierName != ''"> and supplier_name like concat('%', #{supplierName}, '%')</if>
+        <if test="prodTime != null "> and prod_time = #{prodTime}</if>
+    </select>
+
+    <select id="selectStockInDetailListByOrderNo" resultMap="StockInDetailResult">
+        <include refid="selectStockInDetailVo"/>
+        WHERE del_flag = 0 AND order_no = #{orderNo}
+        ORDER BY line_no ASC
+    </select>
+    
+    <select id="selectStockInDetailByDetailId" parameterType="Long" resultMap="StockInDetailResult">
+        <include refid="selectStockInDetailVo"/>
+        where del_flag = 0 AND detail_id = #{detailId}
+    </select>
+        
+    <insert id="insertStockInDetail" parameterType="StockInDetail" useGeneratedKeys="true" keyProperty="detailId">
+        insert into stock_in_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="warehouseCode != null">warehouse_code,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="lineNo != null">line_no,</if>
+            <if test="matCode != null">mat_code,</if>
+            <if test="matName != null">mat_name,</if>
+            <if test="fdCode != null">fd_code,</if>
+            <if test="figNum != null">fig_num,</if>
+            <if test="matGroup != null">mat_group,</if>
+            <if test="matClass != null">mat_class,</if>
+            <if test="unitCode != null">unit_code,</if>
+            <if test="labelId != null">label_id,</if>
+            <if test="batch != null">batch,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="qualifiedQuantity != null">qualified_quantity,</if>
+            <if test="stockInQuantity != null">stock_in_quantity,</if>
+            <if test="unitPrice != null">unit_price,</if>
+            <if test="supplierCode != null">supplier_code,</if>
+            <if test="supplierName != null">supplier_name,</if>
+            <if test="prodTime != null">prod_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="warehouseCode != null">#{warehouseCode},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="lineNo != null">#{lineNo},</if>
+            <if test="matCode != null">#{matCode},</if>
+            <if test="matName != null">#{matName},</if>
+            <if test="fdCode != null">#{fdCode},</if>
+            <if test="figNum != null">#{figNum},</if>
+            <if test="matGroup != null">#{matGroup},</if>
+            <if test="matClass != null">#{matClass},</if>
+            <if test="unitCode != null">#{unitCode},</if>
+            <if test="labelId != null">#{labelId},</if>
+            <if test="batch != null">#{batch},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="qualifiedQuantity != null">#{qualifiedQuantity},</if>
+            <if test="stockInQuantity != null">#{stockInQuantity},</if>
+            <if test="unitPrice != null">#{unitPrice},</if>
+            <if test="supplierCode != null">#{supplierCode},</if>
+            <if test="supplierName != null">#{supplierName},</if>
+            <if test="prodTime != null">#{prodTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <insert id="insertStockInDetailList">
+        INSERT INTO stock_in_detail(
+            warehouse_code,
+            order_no,
+            line_no,
+            mat_code,
+            mat_name,
+            fd_code,
+            fig_num,
+            mat_group,
+            mat_class,
+            unit_code,
+            label_id,
+            batch,
+            quantity,
+            qualified_quantity,
+            stock_in_quantity,
+            unit_price,
+            supplier_code,
+            supplier_name,
+            prod_time,
+            del_flag,
+            create_by,
+            create_time
+        )VALUES
+        <foreach collection="list" item="item" separator=",">
+        (
+            #{item.warehouseCode},
+            #{item.orderNo},
+            #{item.lineNo},
+            #{item.matCode},
+            #{item.matName},
+            #{item.fdCode},
+            #{item.figNum},
+            #{item.matGroup},
+            #{item.matClass},
+            #{item.unitCode},
+            #{item.labelId},
+            #{item.batch},
+            #{item.quantity},
+            0,
+            0,
+            #{item.unitPrice},
+            #{item.supplierCode},
+            #{item.supplierName},
+            #{item.prodTime},
+            0,
+            #{item.createBy},
+            #{item.createTime}
+        )
+        </foreach >
+    </insert>
+
+    <update id="updateStockInDetail" parameterType="StockInDetail">
+        update stock_in_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="warehouseCode != null">warehouse_code = #{warehouseCode},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="lineNo != null">line_no = #{lineNo},</if>
+            <if test="matCode != null">mat_code = #{matCode},</if>
+            <if test="matName != null">mat_name = #{matName},</if>
+            <if test="fdCode != null">fd_code = #{fdCode},</if>
+            <if test="figNum != null">fig_num = #{figNum},</if>
+            <if test="matGroup != null">mat_group = #{matGroup},</if>
+            <if test="matClass != null">mat_class = #{matClass},</if>
+            <if test="unitCode != null">unit_code = #{unitCode},</if>
+            <if test="labelId != null">label_id = #{labelId},</if>
+            <if test="batch != null">batch = #{batch},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="qualifiedQuantity != null">qualified_quantity = #{qualifiedQuantity},</if>
+            <if test="stockInQuantity != null">stock_in_quantity = #{stockInQuantity},</if>
+            <if test="unitPrice != null">unit_price = #{unitPrice},</if>
+            <if test="supplierCode != null">supplier_code = #{supplierCode},</if>
+            <if test="supplierName != null">supplier_name = #{supplierName},</if>
+            <if test="prodTime != null">prod_time = #{prodTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where detail_id = #{detailId}
+    </update>
+
+    <update id="deleteStockInDetailByDetailId" parameterType="Long">
+        UPDATE stock_in_detail SET del_flag = 1 where detail_id = #{detailId}
+    </update>
+
+    <update id="deleteStockInDetailByDetailIds" parameterType="String">
+        UPDATE stock_in_detail SET del_flag = 1 where detail_id in
+        <foreach item="detailId" collection="array" open="(" separator="," close=")">
+            #{detailId}
+        </foreach>
+    </update>
+
+    <update id="deleteStockInDetailByOrderId" parameterType="Long">
+        UPDATE stock_in_detail SET del_flag = 1
+        WHERE order_no = (SELECT order_no FROM stock_in_order WHERE order_id = #{orderId})
+    </update>
+
+    <select id="selectStockInStatsList" resultType="com.ruoyi.stock.domain.stats.StockInStats">
+        SELECT
+            in_table.mat_code AS matCode,
+            in_table.mat_name AS matName,
+            in_table.fig_num AS figNum,
+            IFNULL(in_table.quantity, 0) AS quantity,
+            IFNULL(in_table.qualifiedQuantity, 0) AS qualifiedQuantity,
+            IFNULL(in_table.stockInQuantity, 0) AS stockInQuantity,
+            IFNULL(return_table.returnQuantity, 0) AS returnQuantity,
+            IFNULL(return_table.finishReturnQuantity, 0) AS finishReturnQuantity
+        FROM
+            (
+                SELECT
+                    mat_code,mat_name,fig_num,
+                    SUM(quantity) AS quantity,
+                    SUM(qualified_quantity) AS qualifiedQuantity,
+                    SUM(stock_in_quantity) AS stockInQuantity
+                FROM stock_in_detail
+                WHERE del_flag = 0
+                <if test="matCode != null and matCode != ''">
+                    AND mat_code = #{matCode}
+                </if>
+                <if test="matName != null and matName != ''">
+                    AND mat_name LIKE CONCAT('%', #{matName}, '%')
+                </if>
+                GROUP BY mat_code,mat_name,fd_code,fig_num,mat_group,mat_class,unit_code
+            )in_table
+            LEFT JOIN
+            (
+                SELECT
+                    mat_code,
+                    SUM(quantity) AS returnQuantity,
+                    SUM(return_quantity) AS finishReturnQuantity
+                FROM stock_in_return_detail
+                WHERE del_flag = 0
+                <if test="matCode != null and matCode != ''">
+                    AND mat_code = #{matCode}
+                </if>
+                <if test="matName != null and matName != ''">
+                    AND mat_name LIKE CONCAT('%', #{matName}, '%')
+                </if>
+                GROUP BY mat_code
+            )return_table
+            ON in_table.mat_code = return_table.mat_code
+        ORDER BY in_table.mat_code ASC
+    </select>
+
+</mapper>

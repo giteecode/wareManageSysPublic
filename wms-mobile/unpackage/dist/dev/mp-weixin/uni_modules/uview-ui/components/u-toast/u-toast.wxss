@@ -1,0 +1,85 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+view.data-v-0c6e2509, scroll-view.data-v-0c6e2509, swiper-item.data-v-0c6e2509 {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
+  align-items: stretch;
+  align-content: flex-start;
+}
+.u-toast__content.data-v-0c6e2509 {
+  display: flex;
+  flex-direction: row;
+  padding: 12px 20px;
+  border-radius: 4px;
+  background-color: #585858;
+  color: #fff;
+  align-items: center;
+  max-width: 600rpx;
+  position: relative;
+}
+.u-toast__content--loading.data-v-0c6e2509 {
+  flex-direction: column;
+  padding: 20px 20px;
+}
+.u-toast__content__text.data-v-0c6e2509 {
+  color: #fff;
+  font-size: 15px;
+  line-height: 15px;
+}
+.u-toast__content__text--default.data-v-0c6e2509 {
+  color: #fff;
+}
+.u-toast__content__text--error.data-v-0c6e2509 {
+  color: #f56c6c;
+}
+.u-toast__content__text--primary.data-v-0c6e2509 {
+  color: #3c9cff;
+}
+.u-toast__content__text--success.data-v-0c6e2509 {
+  color: #5ac725;
+}
+.u-toast__content__text--warning.data-v-0c6e2509 {
+  color: #f9ae3d;
+}
+.u-type-primary.data-v-0c6e2509 {
+  color: #3c9cff;
+  background-color: #ecf5ff;
+  border-color: #d7eafe;
+  border-width: 1px;
+}
+.u-type-success.data-v-0c6e2509 {
+  color: #5ac725;
+  background-color: #dbf1e1;
+  border-color: #BEF5C8;
+  border-width: 1px;
+}
+.u-type-error.data-v-0c6e2509 {
+  color: #f56c6c;
+  background-color: #fef0f0;
+  border-color: #fde2e2;
+  border-width: 1px;
+}
+.u-type-warning.data-v-0c6e2509 {
+  color: #f9ae3d;
+  background-color: #fdf6ec;
+  border-color: #faecd8;
+  border-width: 1px;
+}
+.u-type-default.data-v-0c6e2509 {
+  color: #fff;
+  background-color: #585858;
+}
+

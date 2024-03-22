@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "个人中心",
+  "usingComponents": {
+    "u-avatar": "/uni_modules/uview-ui/components/u-avatar/u-avatar",
+    "u-gap": "/uni_modules/uview-ui/components/u-gap/u-gap",
+    "u-button": "/uni_modules/uview-ui/components/u-button/u-button"
+  }
+}

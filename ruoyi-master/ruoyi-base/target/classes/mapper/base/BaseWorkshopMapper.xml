@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.base.mapper.BaseWorkshopMapper">
+    
+    <resultMap type="BaseWorkshop" id="BaseWorkshopResult">
+        <result property="workshopId"    column="workshop_id"    />
+        <result property="workshopCode"    column="workshop_code"    />
+        <result property="workshopName"    column="workshop_name"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBaseWorkshopVo">
+        select workshop_id, workshop_code, workshop_name, del_flag, create_by, create_time, update_by, update_time from base_workshop
+    </sql>
+
+    <select id="selectBaseWorkshopList" parameterType="BaseWorkshop" resultMap="BaseWorkshopResult">
+        <include refid="selectBaseWorkshopVo"/>
+        WHERE del_flag = 0
+        <if test="workshopCode != null  and workshopCode != ''"> and workshop_code = #{workshopCode}</if>
+        <if test="workshopName != null  and workshopName != ''"> and workshop_name like concat('%', #{workshopName}, '%')</if>
+    </select>
+    
+    <select id="selectBaseWorkshopByWorkshopId" parameterType="Long" resultMap="BaseWorkshopResult">
+        <include refid="selectBaseWorkshopVo"/>
+        where del_flag = 0 AND workshop_id = #{workshopId}
+    </select>
+
+    <select id="selectBaseWorkshopByWorkshopCode" resultType="java.lang.String">
+        select workshop_name from base_workshop where del_flag = 0 AND workshop_code = #{workshopCode}
+    </select>
+        
+    <insert id="insertBaseWorkshop" parameterType="BaseWorkshop" useGeneratedKeys="true" keyProperty="workshopId">
+        insert into base_workshop
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workshopCode != null">workshop_code,</if>
+            <if test="workshopName != null">workshop_name,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workshopCode != null">#{workshopCode},</if>
+            <if test="workshopName != null">#{workshopName},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaseWorkshop" parameterType="BaseWorkshop">
+        update base_workshop
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workshopCode != null">workshop_code = #{workshopCode},</if>
+            <if test="workshopName != null">workshop_name = #{workshopName},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where workshop_id = #{workshopId}
+    </update>
+
+    <update id="deleteBaseWorkshopByWorkshopId" parameterType="Long">
+        update base_workshop set del_flag = 1 where workshop_id = #{workshopId}
+    </update>
+
+    <update id="deleteBaseWorkshopByWorkshopIds" parameterType="String">
+        update base_workshop set del_flag = 1 where workshop_id in
+        <foreach item="workshopId" collection="array" open="(" separator="," close=")">
+            #{workshopId}
+        </foreach>
+    </update>
+</mapper>

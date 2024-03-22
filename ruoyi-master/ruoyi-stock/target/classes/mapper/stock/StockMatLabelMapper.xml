@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.stock.mapper.StockMatLabelMapper">
+    
+    <resultMap type="StockMatLabel" id="StockMatLabelResult">
+        <result property="labelId"    column="label_id"    />
+        <result property="warehouseCode"    column="warehouse_code"    />
+        <result property="locationCode"    column="location_code"    />
+        <result property="labelType"    column="label_type"    />
+        <result property="matCode"    column="mat_code"    />
+        <result property="matName"    column="mat_name"    />
+        <result property="fdCode"    column="fd_code"    />
+        <result property="figNum"    column="fig_num"    />
+        <result property="matGroup"    column="mat_group"    />
+        <result property="matClass"    column="mat_class"    />
+        <result property="unitCode"    column="unit_code"    />
+        <result property="batch"    column="batch"    />
+        <result property="supplierCode"    column="supplier_code"    />
+        <result property="supplierName"    column="supplier_name"    />
+        <result property="prodTime"    column="prod_time"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="usableQuantity"    column="usable_quantity"    />
+        <result property="receivedQuantity"    column="received_quantity"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="orderType"    column="order_type"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectStockMatLabelVo">
+        select label_id, warehouse_code, location_code, label_type, mat_code, mat_name, fd_code, fig_num, mat_group, mat_class, unit_code, batch, supplier_code, supplier_name, prod_time,
+               quantity, usable_quantity, received_quantity, unit_price, order_no, order_type, del_flag, create_by, create_time, update_by, update_time from stock_mat_label
+    </sql>
+
+    <select id="selectStockMatLabelList" parameterType="StockMatLabel" resultMap="StockMatLabelResult">
+        <include refid="selectStockMatLabelVo"/>
+        WHERE del_flag = 0
+        <if test="warehouseCode != null  and warehouseCode != ''"> and warehouse_code = #{warehouseCode}</if>
+        <if test="locationCode != null  and locationCode != ''"> and location_code = #{locationCode}</if>
+        <if test="labelType != null  and labelType != ''"> and label_type = #{labelType}</if>
+        <if test="matCode != null  and matCode != ''"> and mat_code = #{matCode}</if>
+        <if test="matName != null  and matName != ''"> and mat_name like concat('%', #{matName}, '%')</if>
+        <if test="fdCode != null  and fdCode != ''"> and fd_code = #{fdCode}</if>
+        <if test="figNum != null  and figNum != ''"> and fig_num = #{figNum}</if>
+        <if test="matGroup != null  and matGroup != ''"> and mat_group = #{matGroup}</if>
+        <if test="matClass != null  and matClass != ''"> and mat_class = #{matClass}</if>
+        <if test="unitCode != null  and unitCode != ''"> and unit_code = #{unitCode}</if>
+        <if test="batch != null  and batch != ''"> and batch = #{batch}</if>
+        <if test="supplierCode != null  and supplierCode != ''"> and supplier_code = #{supplierCode}</if>
+        <if test="supplierName != null  and supplierName != ''"> and supplier_name like concat('%', #{supplierName}, '%')</if>
+        <if test="prodTime != null "> and prod_time = #{prodTime}</if>
+        <if test="quantity != null "> and quantity = #{quantity}</if>
+        <if test="unitPrice != null "> and unit_price = #{unitPrice}</if>
+        <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+        <if test="orderType != null  and orderType != ''"> and order_type = #{orderType}</if>
+    </select>
+
+    <select id="selectStockMatLabelListDialog" parameterType="StockMatLabel" resultMap="StockMatLabelResult">
+        <include refid="selectStockMatLabelVo"/>
+        WHERE del_flag = 0 AND (order_no IS NULL OR order_no = '')
+        <if test="warehouseCode != null  and warehouseCode != ''"> and warehouse_code = #{warehouseCode}</if>
+        <if test="locationCode != null  and locationCode != ''"> and location_code = #{locationCode}</if>
+        <if test="labelType != null  and labelType != ''"> and label_type = #{labelType}</if>
+        <if test="matCode != null  and matCode != ''"> and mat_code = #{matCode}</if>
+        <if test="matName != null  and matName != ''"> and mat_name like concat('%', #{matName}, '%')</if>
+        <if test="fdCode != null  and fdCode != ''"> and fd_code = #{fdCode}</if>
+        <if test="figNum != null  and figNum != ''"> and fig_num = #{figNum}</if>
+        <if test="matGroup != null  and matGroup != ''"> and mat_group = #{matGroup}</if>
+        <if test="matClass != null  and matClass != ''"> and mat_class = #{matClass}</if>
+        <if test="unitCode != null  and unitCode != ''"> and unit_code = #{unitCode}</if>
+        <if test="batch != null  and batch != ''"> and batch = #{batch}</if>
+        <if test="supplierCode != null  and supplierCode != ''"> and supplier_code = #{supplierCode}</if>
+        <if test="supplierName != null  and supplierName != ''"> and supplier_name like concat('%', #{supplierName}, '%')</if>
+        <if test="prodTime != null "> and prod_time = #{prodTime}</if>
+        <if test="quantity != null "> and quantity = #{quantity}</if>
+        <if test="unitPrice != null "> and unit_price = #{unitPrice}</if>
+    </select>
+    
+    <select id="selectStockMatLabelByLabelId" parameterType="Long" resultMap="StockMatLabelResult">
+        <include refid="selectStockMatLabelVo"/>
+        where del_flag = 0 AND label_id = #{labelId}
+    </select>
+        
+    <insert id="insertStockMatLabel" parameterType="StockMatLabel" useGeneratedKeys="true" keyProperty="labelId">
+        insert into stock_mat_label
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="warehouseCode != null">warehouse_code,</if>
+            <if test="locationCode != null">location_code,</if>
+            <if test="labelType != null">label_type,</if>
+            <if test="matCode != null">mat_code,</if>
+            <if test="matName != null">mat_name,</if>
+            <if test="fdCode != null">fd_code,</if>
+            <if test="figNum != null">fig_num,</if>
+            <if test="matGroup != null">mat_group,</if>
+            <if test="matClass != null">mat_class,</if>
+            <if test="unitCode != null">unit_code,</if>
+            <if test="batch != null">batch,</if>
+            <if test="supplierCode != null">supplier_code,</if>
+            <if test="supplierName != null">supplier_name,</if>
+            <if test="prodTime != null">prod_time,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="usableQuantity != null">usable_quantity,</if>
+            <if test="receivedQuantity != null">received_quantity,</if>
+            <if test="unitPrice != null">unit_price,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="orderType != null">order_type,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="warehouseCode != null">#{warehouseCode},</if>
+            <if test="locationCode != null">#{locationCode},</if>
+            <if test="labelType != null">#{labelType},</if>
+            <if test="matCode != null">#{matCode},</if>
+            <if test="matName != null">#{matName},</if>
+            <if test="fdCode != null">#{fdCode},</if>
+            <if test="figNum != null">#{figNum},</if>
+            <if test="matGroup != null">#{matGroup},</if>
+            <if test="matClass != null">#{matClass},</if>
+            <if test="unitCode != null">#{unitCode},</if>
+            <if test="batch != null">#{batch},</if>
+            <if test="supplierCode != null">#{supplierCode},</if>
+            <if test="supplierName != null">#{supplierName},</if>
+            <if test="prodTime != null">#{prodTime},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="usableQuantity != null">#{usableQuantity},</if>
+            <if test="receivedQuantity != null">#{receivedQuantity},</if>
+            <if test="unitPrice != null">#{unitPrice},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="orderType != null">#{orderType},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStockMatLabel" parameterType="StockMatLabel">
+        update stock_mat_label
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="warehouseCode != null">warehouse_code = #{warehouseCode},</if>
+            <if test="locationCode != null">location_code = #{locationCode},</if>
+            <if test="labelType != null">label_type = #{labelType},</if>
+            <if test="matCode != null">mat_code = #{matCode},</if>
+            <if test="matName != null">mat_name = #{matName},</if>
+            <if test="fdCode != null">fd_code = #{fdCode},</if>
+            <if test="figNum != null">fig_num = #{figNum},</if>
+            <if test="matGroup != null">mat_group = #{matGroup},</if>
+            <if test="matClass != null">mat_class = #{matClass},</if>
+            <if test="unitCode != null">unit_code = #{unitCode},</if>
+            <if test="batch != null">batch = #{batch},</if>
+            <if test="supplierCode != null">supplier_code = #{supplierCode},</if>
+            <if test="supplierName != null">supplier_name = #{supplierName},</if>
+            <if test="prodTime != null">prod_time = #{prodTime},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="usableQuantity != null">usable_quantity = #{usableQuantity},</if>
+            <if test="receivedQuantity != null">received_quantity = #{receivedQuantity},</if>
+            <if test="unitPrice != null">unit_price = #{unitPrice},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="orderType != null">order_type = #{orderType},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where label_id = #{labelId}
+    </update>
+
+    <update id="updateUsableQuantity">
+        update stock_mat_label
+        SET
+            warehouse_code = #{warehouseCode},
+            location_code = #{locationCode},
+            usable_quantity = #{usableQuantity},
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        where label_id = #{labelId}
+    </update>
+
+    <update id="updateReceivedQuantity">
+        update stock_mat_label
+        SET
+            received_quantity = received_quantity + #{receivedQuantity},
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        where label_id = #{labelId}
+    </update>
+
+    <update id="updatePutOn">
+        update stock_mat_label
+        set location_code = #{locationCode},
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        where label_id = #{labelId}
+    </update>
+
+    <update id="updatePutOff">
+        update stock_mat_label
+        set location_code = '',
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        where label_id = #{labelId}
+    </update>
+
+    <update id="updateAllotIn">
+        update stock_mat_label
+        set warehouse_code = #{warehouseCode}, location_code = #{locationCode},
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        where label_id = #{labelId}
+    </update>
+
+    <update id="updateAllotOut">
+        update stock_mat_label
+        set warehouse_code = '', location_code = '',
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        where label_id = #{labelId}
+    </update>
+
+    <update id="deleteStockMatLabelByLabelId" parameterType="Long">
+        update stock_mat_label SET del_flag = 1 where label_id = #{labelId}
+    </update>
+
+    <update id="deleteStockMatLabelByLabelIds" parameterType="String">
+        update stock_mat_label SET del_flag = 1 where label_id in
+        <foreach item="labelId" collection="array" open="(" separator="," close=")">
+            #{labelId}
+        </foreach>
+    </update>
+</mapper>

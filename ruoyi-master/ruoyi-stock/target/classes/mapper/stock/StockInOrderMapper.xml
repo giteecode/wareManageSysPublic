@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.stock.mapper.StockInOrderMapper">
+    
+    <resultMap type="StockInOrder" id="StockInOrderResult">
+        <result property="orderId"    column="order_id"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="orderType"    column="order_type"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="checkStatus"    column="check_status"    />
+        <result property="checkBy"    column="check_by"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectStockInOrderVo">
+        select order_id, order_no, order_type, order_status, check_status, check_by, del_flag, create_by, create_time, update_by, update_time from stock_in_order
+    </sql>
+
+    <select id="selectStockInOrderTotal" resultType="java.util.Map">
+        SELECT
+            COUNT(order_type = 'purchase' OR NULL) AS purchase
+        FROM stock_in_order
+        WHERE del_flag = 0
+        <if test="selectDate != null">
+            AND date_format(create_time,'%y%m%d') = date_format(#{selectDate},'%y%m%d')
+        </if>
+    </select>
+
+    <select id="selectStockInOrderList" parameterType="StockInOrder" resultMap="StockInOrderResult">
+        <include refid="selectStockInOrderVo"/>
+        WHERE del_flag = 0
+        <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+        <if test="orderType != null  and orderType != ''"> and order_type = #{orderType}</if>
+        <if test="orderStatus != null  and orderStatus != ''"> and order_status = #{orderStatus}</if>
+        <if test="checkStatus != null  and checkStatus != ''"> and check_status = #{checkStatus}</if>
+        <if test="checkBy != null  and checkBy != ''"> and check_by = #{checkBy}</if>
+        <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+            AND date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+        </if>
+        <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+            AND date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+        </if>
+        ORDER BY create_time DESC
+    </select>
+    
+    <select id="selectStockInOrderByOrderId" parameterType="Long" resultMap="StockInOrderResult">
+        <include refid="selectStockInOrderVo"/>
+        where del_flag = 0 AND order_id = #{orderId}
+    </select>
+
+    <select id="selectStockInOrderByOrderNo" resultMap="StockInOrderResult">
+        <include refid="selectStockInOrderVo"/>
+        where del_flag = 0 AND order_no = #{orderNo}
+    </select>
+        
+    <insert id="insertStockInOrder" parameterType="StockInOrder" useGeneratedKeys="true" keyProperty="orderId">
+        insert into stock_in_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null">order_no,</if>
+            <if test="orderType != null">order_type,</if>
+            <if test="orderStatus != null">order_status,</if>
+            <if test="checkStatus != null">check_status,</if>
+            <if test="checkBy != null">check_by,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="orderType != null">#{orderType},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="checkStatus != null">#{checkStatus},</if>
+            <if test="checkBy != null">#{checkBy},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStockInOrder" parameterType="StockInOrder">
+        update stock_in_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="orderType != null">order_type = #{orderType},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+            <if test="checkStatus != null">check_status = #{checkStatus},</if>
+            <if test="checkBy != null">check_by = #{checkBy},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where order_id = #{orderId}
+    </update>
+
+    <update id="updateStockInOrderByOrderNo" parameterType="StockInOrder">
+        update stock_in_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="checkStatus != null">check_status = #{checkStatus},</if>
+            <if test="checkBy != null">check_by = #{checkBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where order_no = #{orderNo}
+    </update>
+
+    <update id="deleteStockInOrderByOrderId" parameterType="Long">
+        UPDATE stock_in_order SET del_flag = 1 where order_id = #{orderId}
+    </update>
+
+    <update id="deleteStockInOrderByOrderIds" parameterType="String">
+        UPDATE stock_in_order SET del_flag = 1 where order_id in
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </update>
+</mapper>

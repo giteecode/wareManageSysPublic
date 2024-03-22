@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "货位库存",
+  "usingComponents": {
+    "u-search": "/uni_modules/uview-ui/components/u-search/u-search",
+    "u-gap": "/uni_modules/uview-ui/components/u-gap/u-gap",
+    "u-toast": "/uni_modules/uview-ui/components/u-toast/u-toast"
+  }
+}

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysUserClassMapper">
+    
+    <resultMap type="SysUserClass" id="SysUserClassResult">
+        <result property="userName"    column="user_name"    />
+        <result property="classCode"    column="class_code"    />
+
+        <result  property="className"    column="class_name"    />
+    </resultMap>
+
+    <sql id="selectSysUserClassVo">
+        select user_name, class_code from sys_user_class
+    </sql>
+
+    <select id="selectSysUserClassListByUserName" resultMap="SysUserClassResult">
+        select user_name, class_code from sys_user_class where user_name = #{userName}
+    </select>
+
+    <select id="selectSysUserClassList" parameterType="SysUserClass" resultMap="SysUserClassResult">
+        SELECT mc.class_code,mc.class_name,uc.user_name
+        FROM
+        (
+            SELECT class_code,class_name FROM base_mat_class WHERE del_flag = 0
+        )mc
+        LEFT JOIN
+        (
+            SELECT user_name,class_code FROM sys_user_class WHERE user_name = #{userName}
+        )uc
+        ON mc.class_code = uc.class_code
+        WHERE 1 = 1
+        <if test="classCode != null and classCode != ''">
+            AND mc.class_code = #{classCode}
+        </if>
+        <if test="className != null and className != ''">
+            AND mc.class_name LIKE CONCAT('%',#{className},'%')
+        </if>
+    </select>
+    
+    <select id="selectSysUserClassByUserName" parameterType="String" resultMap="SysUserClassResult">
+        <include refid="selectSysUserClassVo"/>
+        where user_name = #{userName} AND class_code = #{classCode}
+    </select>
+        
+    <insert id="insertSysUserClass" parameterType="SysUserClass">
+        insert into sys_user_class
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null">user_name,</if>
+            <if test="classCode != null">class_code,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null">#{userName},</if>
+            <if test="classCode != null">#{classCode},</if>
+         </trim>
+    </insert>
+
+    <delete id="deleteSysUserClassByUserName" parameterType="String">
+        delete from sys_user_class where user_name = #{userName} and class_code = #{classCode}
+    </delete>
+
+</mapper>

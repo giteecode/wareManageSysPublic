@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.base.mapper.BaseMatMapper">
+    
+    <resultMap type="BaseMat" id="BaseMatResult">
+        <result property="matId"    column="mat_id"    />
+        <result property="matCode"    column="mat_code"    />
+        <result property="matName"    column="mat_name"    />
+        <result property="fdCode"    column="fd_code"    />
+        <result property="figNum"    column="fig_num"    />
+        <result property="matGroup"    column="mat_group"    />
+        <result property="matClass"    column="mat_class"    />
+        <result property="unitCode"    column="unit_code"    />
+        <result property="grossWeight"    column="gross_weight"    />
+        <result property="safetyStock"    column="safety_stock"    />
+        <result property="standardPrice"    column="standard_price"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBaseMatVo">
+        select mat_id, mat_code, mat_name, fd_code, fig_num, mat_group, mat_class, unit_code, gross_weight, safety_stock, standard_price, del_flag, create_by, create_time, update_by, update_time from base_mat
+    </sql>
+
+    <select id="selectBaseMatTotal" resultType="java.lang.Integer">
+        SELECT COUNT(1) AS matTotal FROM base_mat WHERE del_flag = 0
+    </select>
+
+    <select id="selectBaseMatList" parameterType="BaseMat" resultMap="BaseMatResult">
+        <include refid="selectBaseMatVo"/>
+        WHERE del_flag = 0
+        <if test="matCode != null  and matCode != ''"> and mat_code = #{matCode}</if>
+        <if test="matName != null  and matName != ''"> and mat_name like concat('%', #{matName}, '%')</if>
+        <if test="fdCode != null  and fdCode != ''"> and fd_code = #{fdCode}</if>
+        <if test="figNum != null  and figNum != ''"> and fig_num = #{figNum}</if>
+        <if test="matGroup != null  and matGroup != ''"> and mat_group = #{matGroup}</if>
+        <if test="matClass != null  and matClass != ''"> and mat_class = #{matClass}</if>
+        <if test="unitCode != null  and unitCode != ''"> and unit_code = #{unitCode}</if>
+        <if test="grossWeight != null "> and gross_weight = #{grossWeight}</if>
+        <if test="safetyStock != null "> and safety_stock = #{safetyStock}</if>
+        <if test="standardPrice != null "> and standard_price = #{standardPrice}</if>
+    </select>
+    
+    <select id="selectBaseMatByMatId" parameterType="Long" resultMap="BaseMatResult">
+        <include refid="selectBaseMatVo"/>
+        where del_flag = 0 AND mat_id = #{matId}
+    </select>
+
+    <select id="selectBomList" resultMap="BaseMatResult">
+        SELECT mat_id,mat_code,mat_name,fd_code,fig_num FROM base_mat WHERE del_flag = 0
+            AND EXISTS
+                (
+                    SELECT temp.father_mat_code FROM (SELECT father_mat_code FROM base_mat_bom GROUP BY father_mat_code) temp
+                    WHERE base_mat.mat_code = temp.father_mat_code
+                )
+        <if test="matCode != null and matCode != ''">
+            AND mat_code = #{matCode}
+        </if>
+        <if test="matName != null and matName != ''">
+            AND mat_name like concat('%', #{matName}, '%')
+        </if>
+    </select>
+
+    <select id="selectBaseMatByMatCode" resultMap="BaseMatResult">
+        <include refid="selectBaseMatVo"/>
+        where mat_code = #{matCode} AND del_flag = 0
+    </select>
+        
+    <insert id="insertBaseMat" parameterType="BaseMat" useGeneratedKeys="true" keyProperty="matId">
+        insert into base_mat
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="matCode != null">mat_code,</if>
+            <if test="matName != null">mat_name,</if>
+            <if test="fdCode != null">fd_code,</if>
+            <if test="figNum != null">fig_num,</if>
+            <if test="matGroup != null">mat_group,</if>
+            <if test="matClass != null">mat_class,</if>
+            <if test="unitCode != null">unit_code,</if>
+            <if test="grossWeight != null">gross_weight,</if>
+            <if test="safetyStock != null">safety_stock,</if>
+            <if test="standardPrice != null">standard_price,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="matCode != null">#{matCode},</if>
+            <if test="matName != null">#{matName},</if>
+            <if test="fdCode != null">#{fdCode},</if>
+            <if test="figNum != null">#{figNum},</if>
+            <if test="matGroup != null">#{matGroup},</if>
+            <if test="matClass != null">#{matClass},</if>
+            <if test="unitCode != null">#{unitCode},</if>
+            <if test="grossWeight != null">#{grossWeight},</if>
+            <if test="safetyStock != null">#{safetyStock},</if>
+            <if test="standardPrice != null">#{standardPrice},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaseMat" parameterType="BaseMat">
+        update base_mat
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="matCode != null">mat_code = #{matCode},</if>
+            <if test="matName != null">mat_name = #{matName},</if>
+            <if test="fdCode != null">fd_code = #{fdCode},</if>
+            <if test="figNum != null">fig_num = #{figNum},</if>
+            <if test="matGroup != null">mat_group = #{matGroup},</if>
+            <if test="matClass != null">mat_class = #{matClass},</if>
+            <if test="unitCode != null">unit_code = #{unitCode},</if>
+            <if test="grossWeight != null">gross_weight = #{grossWeight},</if>
+            <if test="safetyStock != null">safety_stock = #{safetyStock},</if>
+            <if test="standardPrice != null">standard_price = #{standardPrice},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where mat_id = #{matId}
+    </update>
+
+    <update id="deleteBaseMatByMatId" parameterType="Long">
+        update base_mat set del_flag = 1 where mat_id = #{matId}
+    </update>
+
+    <update id="deleteBaseMatByMatIds" parameterType="String">
+        update base_mat set del_flag = 1 where mat_id in
+        <foreach item="matId" collection="array" open="(" separator="," close=")">
+            #{matId}
+        </foreach>
+    </update>
+</mapper>

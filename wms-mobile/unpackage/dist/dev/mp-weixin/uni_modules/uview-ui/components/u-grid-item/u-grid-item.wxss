@@ -1,0 +1,36 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+view.data-v-5b3a01af, scroll-view.data-v-5b3a01af, swiper-item.data-v-5b3a01af {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
+  align-items: stretch;
+  align-content: flex-start;
+}
+.u-grid-item.data-v-5b3a01af {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-direction: column;
+  box-sizing: border-box;
+  display: flex;
+  position: relative;
+  float: left;
+  margin-top: 1rpx;
+}
+.u-grid-item--hover-class.data-v-5b3a01af {
+  opacity: 0.5;
+}
+

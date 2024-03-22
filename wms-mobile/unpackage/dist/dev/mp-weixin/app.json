@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/user/login",
+    "pages/home/index",
+    "pages/stock/stock_in",
+    "pages/stock/stock_out",
+    "pages/stock/put_on",
+    "pages/stock/put_off",
+    "pages/stock/stock_in_return",
+    "pages/stock/stock_out_return",
+    "pages/stock/location",
+    "pages/stock/allocation",
+    "pages/user/index"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#909399",
+    "selectedColor": "#303133",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "iconPath": "static/img/tabBar/home.png",
+        "selectedIconPath": "static/img/tabBar/home_active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/user/index",
+        "iconPath": "static/img/tabBar/user.png",
+        "selectedIconPath": "static/img/tabBar/user_active.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
+}

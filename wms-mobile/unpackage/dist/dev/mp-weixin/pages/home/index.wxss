@@ -1,0 +1,49 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+.banner {
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  padding: 10rpx 30rpx;
+  background-color: white;
+}
+.menu .grid-text {
+  font-size: 14px;
+  color: #909399;
+  padding: 10rpx 0 20rpx 0rpx;
+  box-sizing: border-box;
+}
+.info .info-area {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30rpx;
+}
+.info .info-area .info-item {
+  margin: 0px 15rpx 0 15rpx;
+  padding: 15rpx 40rpx 15rpx 40rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 0 20rpx 2rpx rgba(0, 0, 0, 0.1);
+}
+.info .info-area .info-item .title {
+  font-size: 26rpx;
+}
+.info .info-area .info-item .num {
+  display: flex;
+  justify-content: center;
+  color: #3c9cff;
+  margin-top: 10rpx;
+}
+.info .info-area .info-item .return {
+  color: #f56c6c;
+}
+

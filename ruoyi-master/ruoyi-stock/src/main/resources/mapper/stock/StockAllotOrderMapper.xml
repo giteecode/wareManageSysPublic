@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.stock.mapper.StockAllotOrderMapper">
+    
+    <resultMap type="StockAllotOrder" id="StockAllotOrderResult">
+        <result property="allotId"    column="allot_id"    />
+        <result property="allotNo"    column="allot_no"    />
+        <result property="allotReason"    column="allot_reason"    />
+        <result property="srcWarehouseCode"    column="src_warehouse_code"    />
+        <result property="destWarehouseCode"    column="dest_warehouse_code"    />
+        <result property="allotStatus"    column="allot_status"    />
+        <result property="allotProgress"    column="allot_progress"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectStockAllotOrderVo">
+        select allot_id, allot_no, allot_reason, src_warehouse_code, dest_warehouse_code, allot_status, allot_progress, del_flag, create_by, create_time, update_by, update_time from stock_allot_order
+    </sql>
+
+    <select id="selectStockAllotOrderList" parameterType="StockAllotOrder" resultMap="StockAllotOrderResult">
+        <include refid="selectStockAllotOrderVo"/>
+        WHERE del_flag = 0
+        <if test="allotNo != null  and allotNo != ''"> and allot_no = #{allotNo}</if>
+        <if test="allotReason != null  and allotReason != ''"> and allot_reason = #{allotReason}</if>
+        <if test="srcWarehouseCode != null  and srcWarehouseCode != ''"> and src_warehouse_code = #{srcWarehouseCode}</if>
+        <if test="destWarehouseCode != null  and destWarehouseCode != ''"> and dest_warehouse_code = #{destWarehouseCode}</if>
+        <if test="allotStatus != null  and allotStatus != ''"> and allot_status = #{allotStatus}</if>
+        <if test="allotProgress != null  and allotProgress != ''"> and allot_progress = #{allotProgress}</if>
+    </select>
+    
+    <select id="selectStockAllotOrderByAllotId" parameterType="Long" resultMap="StockAllotOrderResult">
+        <include refid="selectStockAllotOrderVo"/>
+        where del_flag = 0 and allot_id = #{allotId}
+    </select>
+
+    <select id="selectStockAllotOrderByAllotNo" resultMap="StockAllotOrderResult">
+        <include refid="selectStockAllotOrderVo"/>
+        where del_flag = 0 and allot_no = #{allotNo}
+    </select>
+        
+    <insert id="insertStockAllotOrder" parameterType="StockAllotOrder" useGeneratedKeys="true" keyProperty="allotId">
+        insert into stock_allot_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="allotNo != null">allot_no,</if>
+            <if test="allotReason != null">allot_reason,</if>
+            <if test="srcWarehouseCode != null">src_warehouse_code,</if>
+            <if test="destWarehouseCode != null">dest_warehouse_code,</if>
+            <if test="allotStatus != null">allot_status,</if>
+            <if test="allotProgress != null">allot_progress,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="allotNo != null">#{allotNo},</if>
+            <if test="allotReason != null">#{allotReason},</if>
+            <if test="srcWarehouseCode != null">#{srcWarehouseCode},</if>
+            <if test="destWarehouseCode != null">#{destWarehouseCode},</if>
+            <if test="allotStatus != null">#{allotStatus},</if>
+            <if test="allotProgress != null">#{allotProgress},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStockAllotOrder" parameterType="StockAllotOrder">
+        update stock_allot_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="allotNo != null">allot_no = #{allotNo},</if>
+            <if test="allotReason != null">allot_reason = #{allotReason},</if>
+            <if test="srcWarehouseCode != null">src_warehouse_code = #{srcWarehouseCode},</if>
+            <if test="destWarehouseCode != null">dest_warehouse_code = #{destWarehouseCode},</if>
+            <if test="allotStatus != null">allot_status = #{allotStatus},</if>
+            <if test="allotProgress != null">allot_progress = #{allotProgress},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where allot_id = #{allotId}
+    </update>
+
+    <update id="deleteStockAllotOrderByAllotId" parameterType="Long">
+        update stock_allot_order set del_flag = 1 where allot_id = #{allotId}
+    </update>
+
+    <update id="deleteStockAllotOrderByAllotIds" parameterType="String">
+        update stock_allot_order set del_flag = 1 where allot_id in
+        <foreach item="allotId" collection="array" open="(" separator="," close=")">
+            #{allotId}
+        </foreach>
+    </update>
+</mapper>

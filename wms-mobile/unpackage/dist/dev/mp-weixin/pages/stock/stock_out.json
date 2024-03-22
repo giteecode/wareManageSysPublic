@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "出库单",
+  "usingComponents": {
+    "u-search": "/uni_modules/uview-ui/components/u-search/u-search",
+    "u-button": "/uni_modules/uview-ui/components/u-button/u-button",
+    "u-tag": "/uni_modules/uview-ui/components/u-tag/u-tag",
+    "u-gap": "/uni_modules/uview-ui/components/u-gap/u-gap",
+    "u-modal": "/uni_modules/uview-ui/components/u-modal/u-modal",
+    "u-number-box": "/uni_modules/uview-ui/components/u-number-box/u-number-box",
+    "u-toast": "/uni_modules/uview-ui/components/u-toast/u-toast"
+  }
+}

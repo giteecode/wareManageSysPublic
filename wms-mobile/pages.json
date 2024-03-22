@@ -1,0 +1,44 @@
+{
+	"pages": [
+		//登录
+		{ "path": "pages/user/login", "style": { "navigationBarTitleText": "WMS | 仓库管理系统"}},
+		//首页
+		{ "path": "pages/home/index", "style": { "navigationBarTitleText": "WMS | 仓库管理系统" } },
+		//仓库操作
+		{ "path": "pages/stock/stock_in", "style": { "navigationBarTitleText": "入库单"}},
+		{ "path": "pages/stock/stock_out", "style": { "navigationBarTitleText": "出库单"}},
+		{ "path": "pages/stock/put_on", "style": { "navigationBarTitleText": "上架"}},
+		{ "path": "pages/stock/put_off", "style": { "navigationBarTitleText": "下架"}},
+		{ "path": "pages/stock/stock_in_return", "style": { "navigationBarTitleText": "入库退货"}},
+		{ "path": "pages/stock/stock_out_return", "style": { "navigationBarTitleText": "出库退货"}},
+		{ "path": "pages/stock/location", "style": { "navigationBarTitleText": "货位库存"}},
+		{ "path": "pages/stock/allocation", "style": { "navigationBarTitleText": "调拨单"}},
+		//个人中心
+		{ "path": "pages/user/index", "style": { "navigationBarTitleText": "个人中心"}}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+	    "color": "#909399",
+	    "selectedColor": "#303133",
+	    "borderStyle": "black",
+	    "backgroundColor": "#ffffff",
+	    "list": [
+			{
+				"pagePath": "pages/home/index",
+				"iconPath": "static/img/tabBar/home.png",
+				"selectedIconPath": "static/img/tabBar/home_active.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/user/index",
+				"iconPath": "static/img/tabBar/user.png",
+				"selectedIconPath": "static/img/tabBar/user_active.png",
+				"text": "我的"
+			}
+		]
+	}
+}

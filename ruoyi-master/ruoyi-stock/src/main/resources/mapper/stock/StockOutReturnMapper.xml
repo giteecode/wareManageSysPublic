@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.stock.mapper.StockOutReturnMapper">
+    
+    <resultMap type="StockOutReturn" id="StockOutReturnResult">
+        <result property="returnId"    column="return_id"    />
+        <result property="returnNo"    column="return_no"    />
+        <result property="warehouseCode"    column="warehouse_code"    />
+        <result property="workshopCode"    column="workshop_code"    />
+        <result property="returnType"    column="return_type"    />
+        <result property="returnReason"    column="return_reason"    />
+        <result property="returnStatus"    column="return_status"    />
+        <result property="prodOrderNo"    column="prod_order_no"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectStockOutReturnVo">
+        select return_id, return_no, warehouse_code, workshop_code, return_type, return_reason, return_status, prod_order_no, order_no, del_flag, create_by, create_time, update_by, update_time from stock_out_return
+    </sql>
+
+    <select id="selectStockOutReturnTotal" resultType="java.util.Map">
+        SELECT
+            COUNT(return_type = 'production_return' OR NULL) AS productionReturn,
+            COUNT(return_type = 'common_return' OR NULL) AS commonReturn
+        FROM stock_out_return
+        WHERE del_flag = 0
+        <if test="selectDate != null">
+            AND date_format(create_time,'%y%m%d') = date_format(#{selectDate},'%y%m%d')
+        </if>
+    </select>
+
+    <select id="selectStockOutReturnList" parameterType="StockOutReturn" resultMap="StockOutReturnResult">
+        <include refid="selectStockOutReturnVo"/>
+        WHERE del_flag = 0
+        <if test="returnNo != null  and returnNo != ''"> and return_no = #{returnNo}</if>
+        <if test="warehouseCode != null  and warehouseCode != ''"> and warehouse_code = #{warehouseCode}</if>
+        <if test="workshopCode != null  and workshopCode != ''"> and workshop_code = #{workshopCode}</if>
+        <if test="returnType != null  and returnType != ''"> and return_type = #{returnType}</if>
+        <if test="returnReason != null  and returnReason != ''"> and return_reason = #{returnReason}</if>
+        <if test="returnStatus != null  and returnStatus != ''"> and return_status = #{returnStatus}</if>
+        <if test="prodOrderNo != null  and prodOrderNo != ''"> and prod_order_no = #{prodOrderNo}</if>
+        <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+    </select>
+
+    <select id="selectStockOutReturnByReturnNo" resultMap="StockOutReturnResult">
+        <include refid="selectStockOutReturnVo"/>
+        where del_flag = 0 AND return_no = #{returnNo}
+    </select>
+    
+    <select id="selectStockOutReturnByReturnId" parameterType="Long" resultMap="StockOutReturnResult">
+        <include refid="selectStockOutReturnVo"/>
+        where del_flag = 0 AND return_id = #{returnId}
+    </select>
+        
+    <insert id="insertStockOutReturn" parameterType="StockOutReturn" useGeneratedKeys="true" keyProperty="returnId">
+        insert into stock_out_return
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="returnNo != null">return_no,</if>
+            <if test="warehouseCode != null">warehouse_code,</if>
+            <if test="workshopCode != null">workshop_code,</if>
+            <if test="returnType != null">return_type,</if>
+            <if test="returnReason != null">return_reason,</if>
+            <if test="returnStatus != null">return_status,</if>
+            <if test="prodOrderNo != null">prod_order_no,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="returnNo != null">#{returnNo},</if>
+            <if test="warehouseCode != null">#{warehouseCode},</if>
+            <if test="workshopCode != null">#{workshopCode},</if>
+            <if test="returnType != null">#{returnType},</if>
+            <if test="returnReason != null">#{returnReason},</if>
+            <if test="returnStatus != null">#{returnStatus},</if>
+            <if test="prodOrderNo != null">#{prodOrderNo},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStockOutReturn" parameterType="StockOutReturn">
+        update stock_out_return
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="returnNo != null">return_no = #{returnNo},</if>
+            <if test="warehouseCode != null">warehouse_code = #{warehouseCode},</if>
+            <if test="workshopCode != null">workshop_code = #{workshopCode},</if>
+            <if test="returnType != null">return_type = #{returnType},</if>
+            <if test="returnReason != null">return_reason = #{returnReason},</if>
+            <if test="returnStatus != null">return_status = #{returnStatus},</if>
+            <if test="prodOrderNo != null">prod_order_no = #{prodOrderNo},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where return_id = #{returnId}
+    </update>
+
+    <update id="deleteStockOutReturnByReturnId" parameterType="Long">
+        update stock_out_return SET del_flag = 1 where return_id = #{returnId}
+    </update>
+
+    <update id="deleteStockOutReturnByReturnIds" parameterType="String">
+        update stock_out_return SET del_flag = 1 where return_id in
+        <foreach item="returnId" collection="array" open="(" separator="," close=")">
+            #{returnId}
+        </foreach>
+    </update>
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.base.mapper.BaseMatBomMapper">
+    
+    <resultMap type="BaseMatBom" id="BaseMatBomResult">
+        <result property="bomId"    column="bom_id"    />
+        <result property="fatherMatCode"    column="father_mat_code"    />
+        <result property="fatherMatNum"    column="father_mat_num"    />
+        <result property="childNo"    column="child_no"    />
+        <result property="childMatCode"    column="child_mat_code"    />
+        <result property="childMatNum"    column="child_mat_num"    />
+        <result property="isFictitious"    column="is_fictitious"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBaseMatBomVo">
+        select bom_id, father_mat_code, father_mat_num, child_no, child_mat_code, child_mat_num, is_fictitious, create_by, create_time, update_by, update_time from base_mat_bom
+    </sql>
+
+    <select id="selectBaseMatBomList" parameterType="BaseMatBom" resultMap="BaseMatBomResult">
+        <include refid="selectBaseMatBomVo"/>
+        <where>  
+            <if test="fatherMatCode != null  and fatherMatCode != ''"> and father_mat_code = #{fatherMatCode}</if>
+            <if test="fatherMatNum != null "> and father_mat_num = #{fatherMatNum}</if>
+            <if test="childNo != null "> and child_no = #{childNo}</if>
+            <if test="childMatCode != null  and childMatCode != ''"> and child_mat_code = #{childMatCode}</if>
+            <if test="childMatNum != null "> and child_mat_num = #{childMatNum}</if>
+            <if test="isFictitious != null  and isFictitious != ''"> and is_fictitious = #{isFictitious}</if>
+        </where>
+        ORDER BY child_no ASC
+    </select>
+
+    <select id="selectBaseMatBomByFatherMatCode" resultMap="BaseMatBomResult">
+        <include refid="selectBaseMatBomVo"/>
+        where father_mat_code = #{fatherMatCode}
+    </select>
+    
+    <select id="selectBaseMatBomByBomId" parameterType="Long" resultMap="BaseMatBomResult">
+        <include refid="selectBaseMatBomVo"/>
+        where bom_id = #{bomId}
+    </select>
+
+    <insert id="insertBaseMatBom" parameterType="BaseMatBom" useGeneratedKeys="true" keyProperty="bomId">
+        insert into base_mat_bom
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fatherMatCode != null">father_mat_code,</if>
+            <if test="fatherMatNum != null">father_mat_num,</if>
+            <if test="childNo != null">child_no,</if>
+            <if test="childMatCode != null">child_mat_code,</if>
+            <if test="childMatNum != null">child_mat_num,</if>
+            <if test="isFictitious != null">is_fictitious,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fatherMatCode != null">#{fatherMatCode},</if>
+            <if test="fatherMatNum != null">#{fatherMatNum},</if>
+            <if test="childNo != null">#{childNo},</if>
+            <if test="childMatCode != null">#{childMatCode},</if>
+            <if test="childMatNum != null">#{childMatNum},</if>
+            <if test="isFictitious != null">#{isFictitious},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaseMatBom" parameterType="BaseMatBom">
+        update base_mat_bom
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fatherMatCode != null">father_mat_code = #{fatherMatCode},</if>
+            <if test="fatherMatNum != null">father_mat_num = #{fatherMatNum},</if>
+            <if test="childNo != null">child_no = #{childNo},</if>
+            <if test="childMatCode != null">child_mat_code = #{childMatCode},</if>
+            <if test="childMatNum != null">child_mat_num = #{childMatNum},</if>
+            <if test="isFictitious != null">is_fictitious = #{isFictitious},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where bom_id = #{bomId}
+    </update>
+
+    <delete id="deleteBaseMatBomByBomId" parameterType="Long">
+        delete from base_mat_bom where bom_id = #{bomId}
+    </delete>
+
+    <delete id="deleteBaseMatBomByBomIds" parameterType="String">
+        delete from base_mat_bom where bom_id in 
+        <foreach item="bomId" collection="array" open="(" separator="," close=")">
+            #{bomId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBaseMatBomByMatCodes" parameterType="String">
+        delete from base_mat_bom where father_mat_code in
+        <foreach item="matCode" collection="array" open="(" separator="," close=")">
+            #{matCode}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBaseMatBomByFMatCode">
+        DELETE FROM base_mat_bom WHERE father_mat_code = #{fatherMatCode}
+    </delete>
+</mapper>

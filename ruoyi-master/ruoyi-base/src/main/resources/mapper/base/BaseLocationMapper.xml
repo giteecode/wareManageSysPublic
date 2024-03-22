@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.base.mapper.BaseLocationMapper">
+    
+    <resultMap type="BaseLocation" id="BaseLocationResult">
+        <result property="locationId"    column="location_id"    />
+        <result property="warehouseCode"    column="warehouse_code"    />
+        <result property="locationCode"    column="location_code"    />
+        <result property="locationName"    column="location_name"    />
+        <result property="locationType"    column="location_type"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBaseLocationVo">
+        select location_id, warehouse_code, location_code, location_name, location_type, del_flag, create_by, create_time, update_by, update_time from base_location
+    </sql>
+
+    <select id="selectBaseLocationList" parameterType="BaseLocation" resultMap="BaseLocationResult">
+        <include refid="selectBaseLocationVo"/>
+        WHERE del_flag = 0
+        <if test="warehouseCode != null  and warehouseCode != ''"> and warehouse_code = #{warehouseCode}</if>
+        <if test="locationCode != null  and locationCode != ''"> and location_code = #{locationCode}</if>
+        <if test="locationName != null  and locationName != ''"> and location_name like concat('%', #{locationName}, '%')</if>
+        <if test="locationType != null  and locationType != ''"> and location_type = #{locationType}</if>
+    </select>
+    
+    <select id="selectBaseLocationByLocationId" parameterType="Long" resultMap="BaseLocationResult">
+        <include refid="selectBaseLocationVo"/>
+        where del_flag = 0 AND location_id = #{locationId}
+    </select>
+        
+    <insert id="insertBaseLocation" parameterType="BaseLocation" useGeneratedKeys="true" keyProperty="locationId">
+        insert into base_location
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="warehouseCode != null">warehouse_code,</if>
+            <if test="locationCode != null">location_code,</if>
+            <if test="locationName != null">location_name,</if>
+            <if test="locationType != null">location_type,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="warehouseCode != null">#{warehouseCode},</if>
+            <if test="locationCode != null">#{locationCode},</if>
+            <if test="locationName != null">#{locationName},</if>
+            <if test="locationType != null">#{locationType},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaseLocation" parameterType="BaseLocation">
+        update base_location
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="warehouseCode != null">warehouse_code = #{warehouseCode},</if>
+            <if test="locationCode != null">location_code = #{locationCode},</if>
+            <if test="locationName != null">location_name = #{locationName},</if>
+            <if test="locationType != null">location_type = #{locationType},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where location_id = #{locationId}
+    </update>
+
+    <update id="deleteBaseLocationByLocationId" parameterType="Long">
+        update base_location set del_flag = 1 where location_id = #{locationId}
+    </update>
+
+    <update id="deleteBaseLocationByLocationIds" parameterType="String">
+        update base_location set del_flag = 1 where location_id in
+        <foreach item="locationId" collection="array" open="(" separator="," close=")">
+            #{locationId}
+        </foreach>
+    </update>
+</mapper>

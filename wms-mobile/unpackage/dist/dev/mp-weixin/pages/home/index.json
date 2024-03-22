@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "WMS | 仓库管理系统",
+  "usingComponents": {
+    "u-swiper": "/uni_modules/uview-ui/components/u-swiper/u-swiper",
+    "uni-section": "/uni_modules/uni-section/components/uni-section/uni-section",
+    "u-grid": "/uni_modules/uview-ui/components/u-grid/u-grid",
+    "u-grid-item": "/uni_modules/uview-ui/components/u-grid-item/u-grid-item",
+    "u--image": "/uni_modules/uview-ui/components/u--image/u--image",
+    "u-gap": "/uni_modules/uview-ui/components/u-gap/u-gap"
+  }
+}

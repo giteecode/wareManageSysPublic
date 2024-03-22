@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.base.mapper.BaseSupplierMapper">
+    
+    <resultMap type="BaseSupplier" id="BaseSupplierResult">
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="supplierCode"    column="supplier_code"    />
+        <result property="supplierName"    column="supplier_name"    />
+        <result property="supplyType"    column="supply_type"    />
+        <result property="address"    column="address"    />
+        <result property="contact"    column="contact"    />
+        <result property="taxNumber"    column="tax_number"    />
+        <result property="depositBank"    column="deposit_bank"    />
+        <result property="bankAccount"    column="bank_account"    />
+        <result property="isQualified"    column="is_qualified"    />
+        <result property="city"    column="city"    />
+        <result property="postalCode"    column="postal_code"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBaseSupplierVo">
+        select supplier_id, supplier_code, supplier_name, supply_type, address, contact, tax_number, deposit_bank, bank_account, is_qualified, city, postal_code, del_flag, create_by, create_time, update_by, update_time from base_supplier
+    </sql>
+
+    <select id="selectBaseSupplierList" parameterType="BaseSupplier" resultMap="BaseSupplierResult">
+        <include refid="selectBaseSupplierVo"/>
+        WHERE del_flag = 0
+        <if test="supplierCode != null  and supplierCode != ''"> and supplier_code = #{supplierCode}</if>
+        <if test="supplierName != null  and supplierName != ''"> and supplier_name like concat('%', #{supplierName}, '%')</if>
+        <if test="supplyType != null  and supplyType != ''"> and supply_type = #{supplyType}</if>
+        <if test="address != null  and address != ''"> and address = #{address}</if>
+        <if test="contact != null  and contact != ''"> and contact = #{contact}</if>
+        <if test="taxNumber != null  and taxNumber != ''"> and tax_number = #{taxNumber}</if>
+        <if test="depositBank != null  and depositBank != ''"> and deposit_bank = #{depositBank}</if>
+        <if test="bankAccount != null  and bankAccount != ''"> and bank_account = #{bankAccount}</if>
+        <if test="isQualified != null  and isQualified != ''"> and is_qualified = #{isQualified}</if>
+        <if test="city != null  and city != ''"> and city = #{city}</if>
+        <if test="postalCode != null  and postalCode != ''"> and postal_code = #{postalCode}</if>
+    </select>
+    
+    <select id="selectBaseSupplierBySupplierId" parameterType="Long" resultMap="BaseSupplierResult">
+        <include refid="selectBaseSupplierVo"/>
+        where del_flag = 0 AND supplier_id = #{supplierId}
+    </select>
+        
+    <insert id="insertBaseSupplier" parameterType="BaseSupplier" useGeneratedKeys="true" keyProperty="supplierId">
+        insert into base_supplier
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="supplierCode != null">supplier_code,</if>
+            <if test="supplierName != null">supplier_name,</if>
+            <if test="supplyType != null">supply_type,</if>
+            <if test="address != null">address,</if>
+            <if test="contact != null">contact,</if>
+            <if test="taxNumber != null">tax_number,</if>
+            <if test="depositBank != null">deposit_bank,</if>
+            <if test="bankAccount != null">bank_account,</if>
+            <if test="isQualified != null">is_qualified,</if>
+            <if test="city != null">city,</if>
+            <if test="postalCode != null">postal_code,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="supplierCode != null">#{supplierCode},</if>
+            <if test="supplierName != null">#{supplierName},</if>
+            <if test="supplyType != null">#{supplyType},</if>
+            <if test="address != null">#{address},</if>
+            <if test="contact != null">#{contact},</if>
+            <if test="taxNumber != null">#{taxNumber},</if>
+            <if test="depositBank != null">#{depositBank},</if>
+            <if test="bankAccount != null">#{bankAccount},</if>
+            <if test="isQualified != null">#{isQualified},</if>
+            <if test="city != null">#{city},</if>
+            <if test="postalCode != null">#{postalCode},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaseSupplier" parameterType="BaseSupplier">
+        update base_supplier
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="supplierCode != null">supplier_code = #{supplierCode},</if>
+            <if test="supplierName != null">supplier_name = #{supplierName},</if>
+            <if test="supplyType != null">supply_type = #{supplyType},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="contact != null">contact = #{contact},</if>
+            <if test="taxNumber != null">tax_number = #{taxNumber},</if>
+            <if test="depositBank != null">deposit_bank = #{depositBank},</if>
+            <if test="bankAccount != null">bank_account = #{bankAccount},</if>
+            <if test="isQualified != null">is_qualified = #{isQualified},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="postalCode != null">postal_code = #{postalCode},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where supplier_id = #{supplierId}
+    </update>
+
+    <update id="deleteBaseSupplierBySupplierId" parameterType="Long">
+        update base_supplier set del_flag = 1 where supplier_id = #{supplierId}
+    </update>
+
+    <update id="deleteBaseSupplierBySupplierIds" parameterType="String">
+        update base_supplier set del_flag = 1 where supplier_id in
+        <foreach item="supplierId" collection="array" open="(" separator="," close=")">
+            #{supplierId}
+        </foreach>
+    </update>
+</mapper>

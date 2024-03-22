@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.base.mapper.BaseWarehouseMapper">
+    
+    <resultMap type="BaseWarehouse" id="BaseWarehouseResult">
+        <result property="warehouseId"    column="warehouse_id"    />
+        <result property="warehouseCode"    column="warehouse_code"    />
+        <result property="warehouseName"    column="warehouse_name"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBaseWarehouseVo">
+        select warehouse_id, warehouse_code, warehouse_name, del_flag, create_by, create_time, update_by, update_time from base_warehouse
+    </sql>
+
+    <select id="selectBaseWarehouseList" parameterType="BaseWarehouse" resultMap="BaseWarehouseResult">
+        <include refid="selectBaseWarehouseVo"/>
+        WHERE del_flag = 0
+        <if test="warehouseCode != null  and warehouseCode != ''"> and warehouse_code = #{warehouseCode}</if>
+        <if test="warehouseName != null  and warehouseName != ''"> and warehouse_name like concat('%', #{warehouseName}, '%')</if>
+    </select>
+    
+    <select id="selectBaseWarehouseByWarehouseId" parameterType="Long" resultMap="BaseWarehouseResult">
+        <include refid="selectBaseWarehouseVo"/>
+        where del_flag = 0 AND warehouse_id = #{warehouseId}
+    </select>
+
+    <select id="selectBaseWarehouseNameByWarehouseCode" resultType="java.lang.String">
+        SELECT warehouse_name FROM base_warehouse WHERE warehouse_code = #{warehouseCode} AND del_flag = 0
+    </select>
+        
+    <insert id="insertBaseWarehouse" parameterType="BaseWarehouse" useGeneratedKeys="true" keyProperty="warehouseId">
+        insert into base_warehouse
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="warehouseCode != null">warehouse_code,</if>
+            <if test="warehouseName != null">warehouse_name,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="warehouseCode != null">#{warehouseCode},</if>
+            <if test="warehouseName != null">#{warehouseName},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaseWarehouse" parameterType="BaseWarehouse">
+        update base_warehouse
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="warehouseCode != null">warehouse_code = #{warehouseCode},</if>
+            <if test="warehouseName != null">warehouse_name = #{warehouseName},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where warehouse_id = #{warehouseId}
+    </update>
+
+    <update id="deleteBaseWarehouseByWarehouseId" parameterType="Long">
+        update base_warehouse set del_flag = 1 where warehouse_id = #{warehouseId}
+    </update>
+
+    <update id="deleteBaseWarehouseByWarehouseIds" parameterType="String">
+        update base_warehouse set del_flag = 1 where warehouse_id in
+        <foreach item="warehouseId" collection="array" open="(" separator="," close=")">
+            #{warehouseId}
+        </foreach>
+    </update>
+</mapper>
